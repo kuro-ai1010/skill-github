@@ -1,0 +1,1417 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Claude Code Skills 超やさしいマニュアル</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#F4F5F9; --surface:#FFFFFF; --ink:#101B33; --ink2:#46506B; --line:#D6DBE7;
+  --navy:#14213D; --gold:#A27A28; --goldSoft:#F2E8CE; --teal:#16756A; --red:#BC412C; --blueSoft:#E4EAF6;
+  --accBg:#14213D; --accFg:#FFFFFF;
+  --serif:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+  --sans:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0D1322; --surface:#151D33; --ink:#EDF0F8; --ink2:#A5AEC5; --line:#2A3453;
+    --navy:#0A0F1D; --gold:#DDB75E; --goldSoft:#2A2514; --teal:#4CC2B0; --red:#F28A74; --blueSoft:#1B2542;
+    --accBg:#DDB75E; --accFg:#14213D;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0D1322; --surface:#151D33; --ink:#EDF0F8; --ink2:#A5AEC5; --line:#2A3453;
+  --navy:#0A0F1D; --gold:#DDB75E; --goldSoft:#2A2514; --teal:#4CC2B0; --red:#F28A74; --blueSoft:#1B2542;
+  --accBg:#DDB75E; --accFg:#14213D;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px);background:var(--bg);scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.9;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,p{margin:0}
+.wrap{width:min(1080px,100% - 40px);margin-inline:auto}
+section{padding:84px 0 28px}
+h2{font-family:var(--serif);font-weight:800;font-size:clamp(1.65rem,3.8vw,2.5rem);line-height:1.4;margin:10px 0 18px;letter-spacing:.02em}
+h3{font-family:var(--serif);font-weight:800;font-size:clamp(1.25rem,2.6vw,1.65rem);line-height:1.5;margin-bottom:10px}
+.kick{font-size:.92rem;color:var(--gold);font-weight:700;letter-spacing:.06em}
+.lead{color:var(--ink2);max-width:42em;font-size:1.05rem}
+code,.mono{font-family:var(--mono);font-size:.88em}
+.ic{background:var(--blueSoft);padding:.1em .45em;border-radius:5px}
+
+/* header */
+.hdr{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.hdr .wrap{display:flex;align-items:center;gap:16px;height:54px}
+.brand{font-family:var(--serif);font-weight:800;white-space:nowrap;font-size:1rem}
+.nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;flex:1}
+.nav a{color:var(--ink2);text-decoration:none;font-size:.88rem;padding:6px 12px;border-radius:99px;white-space:nowrap}
+.nav a:hover{background:var(--blueSoft);color:var(--ink)}
+.tg{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:99px;width:34px;height:34px;cursor:pointer;font-size:15px;flex:none}
+
+/* hero */
+.hero{padding:56px 0 20px}
+.hero .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:44px;align-items:center}
+h1{font-family:var(--serif);font-weight:800;font-size:clamp(2.1rem,5.6vw,3.7rem);line-height:1.3;letter-spacing:.02em;margin:14px 0 20px}
+.hero p.lead{margin-bottom:26px}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-block;text-decoration:none;font-weight:700;padding:13px 24px;border-radius:99px;font-size:.98rem;border:1.5px solid var(--ink);color:var(--ink);background:transparent;cursor:pointer;font-family:inherit}
+.btn.pri{background:var(--accBg);color:var(--accFg);border-color:var(--accBg)}
+.stage{background:#14213D;border-radius:18px;padding:22px;color:#E9EDF7;position:relative;overflow:hidden;min-height:400px;box-shadow:0 30px 60px -30px rgba(16,27,51,.6)}
+.stage::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.04) 0 1px,transparent 1px 36px),repeating-linear-gradient(0deg,rgba(255,255,255,.04) 0 1px,transparent 1px 36px);pointer-events:none}
+.st-src{display:flex;gap:14px;align-items:center;position:relative}
+.st-src svg{width:54px;flex:none}
+.st-src b{display:block;font-family:var(--mono);font-size:1rem}
+.st-src small{color:#9FAACB}
+.st-path{position:relative;height:96px;margin-left:26px;border-left:2px dashed #D8B25A}
+.doc{position:absolute;left:-23px;top:6px;background:#F7E7BC;color:#14213D;font-family:var(--mono);font-size:.78rem;font-weight:700;padding:5px 9px;border-radius:6px;box-shadow:0 8px 18px -6px rgba(0,0,0,.5)}
+.go .doc{animation:fly 2.4s .4s forwards ease-in-out}
+@keyframes fly{0%{transform:translateY(0)}75%{transform:translateY(84px);opacity:1}100%{transform:translateY(92px) scale(.6);opacity:0}}
+.term{background:#0B1222;color:#DCE3F4;font-family:var(--mono);font-size:.86rem;line-height:1.75;border-radius:10px;overflow:hidden;position:relative;border:1px solid #2A3453}
+.term .bar{background:#18223B;padding:8px 12px;display:flex;gap:6px;align-items:center;color:#8C97B8;font-size:.76rem}
+.term .bar i,.win .bar i{width:10px;height:10px;border-radius:50%;background:#46506B;display:block}
+.term .bar span{margin-left:8px}
+.term .body{padding:12px 16px 14px}
+.ln{opacity:0}
+.go .ln{animation:fadeIn .3s forwards;animation-delay:calc(var(--i,0)*.55s + var(--d0,.4s))}
+.ok{color:#59D3B0}.dim{color:#8590B2}.gd{color:#E3BE62}.rd{color:#FF8D76}
+.type{display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;width:0}
+.go .type{animation:typing 1s steps(var(--n)) forwards;animation-delay:var(--d0,.4s)}
+@keyframes typing{to{width:calc(var(--n)*1ch)}}
+.caret::after{content:"";display:inline-block;width:.55em;height:1.05em;background:#DCE3F4;vertical-align:-.15em;margin-left:2px;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+@keyframes fadeIn{to{opacity:1}}
+@keyframes pop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
+@keyframes grow{to{width:var(--w)}}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(209,154,30,.9)}100%{box-shadow:0 0 0 12px rgba(209,154,30,0)}}
+@keyframes dashflow{to{background-position:-24px 0}}
+@keyframes dashv{to{background-position:0 -24px}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes scan{0%{top:0}100%{top:100%}}
+.rv{opacity:0}.go .rv{animation:fadeIn .45s calc(var(--i,0)*.5s + var(--d0,.2s)) forwards}
+.pp{opacity:0}.go .pp{animation:pop .45s calc(var(--i,0)*.45s + var(--d0,.2s)) forwards cubic-bezier(.3,1.5,.5,1)}
+.rp{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:99px;padding:5px 14px;font-size:.82rem;cursor:pointer;font-family:inherit}
+.rp:hover{background:var(--blueSoft)}
+
+/* steps overview */
+.flow{display:flex;align-items:stretch;gap:0;margin:40px 0 0}
+.fs{flex:1;background:var(--surface);border:1px solid var(--line);padding:18px 16px;position:relative}
+.fs:first-child{border-radius:14px 0 0 14px}.fs:last-child{border-radius:0 14px 14px 0}
+.fs .n{font-family:var(--serif);font-weight:800;font-size:1.9rem;color:var(--gold);line-height:1}
+.fs h4{font-size:1rem;margin:8px 0 2px}
+.fs p{font-size:.85rem;color:var(--ink2);line-height:1.6}
+.fs::after{content:"";position:absolute;right:-12px;top:50%;width:22px;height:22px;background:var(--surface);border-top:1px solid var(--line);border-right:1px solid var(--line);transform:translateY(-50%) rotate(45deg);z-index:2}
+.fs:last-child::after{display:none}
+.fs .bar{position:absolute;left:0;bottom:0;height:3px;width:0;background:var(--gold)}
+.go .fs .bar{animation:grow .6s calc(var(--i)*.7s + .3s) forwards}
+
+/* anatomy */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start;margin-top:30px}
+.tree{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 22px 18px;font-family:var(--mono);font-size:.9rem}
+.tree .row{display:grid;grid-template-columns:minmax(0,1fr);padding:8px 0 8px 22px;border-left:2px solid var(--line);margin-left:10px;position:relative}
+.tree .row::before{content:"";position:absolute;left:0;top:50%;width:16px;border-top:2px solid var(--line)}
+.tree .root{font-weight:700;margin-bottom:6px}
+.tree .row.hot{border-left-color:var(--gold)}
+.tree .row.hot::before{border-color:var(--gold)}
+.tree .row b{color:var(--ink)}
+.tree .row span{font-family:var(--sans);color:var(--ink2);font-size:.82rem;line-height:1.55}
+.hot b{background:var(--goldSoft);padding:1px 8px;border-radius:5px;display:inline-block}
+.ba{display:grid;gap:16px}
+.pane{border-radius:14px;padding:18px 20px;border:1px solid var(--line);background:var(--surface);position:relative;overflow:hidden}
+.pane h4{font-size:.95rem;margin-bottom:10px}
+.pane.before{border-color:color-mix(in srgb,var(--red) 40%,var(--line))}
+.pane.after{border-color:color-mix(in srgb,var(--teal) 50%,var(--line))}
+.sk-lines i{display:block;height:7px;border-radius:4px;background:var(--line);margin:7px 0}
+.sk-lines i:nth-child(3n){width:70%}.sk-lines i:nth-child(4n){width:88%}
+.chat{background:var(--blueSoft);border-radius:12px 12px 12px 3px;padding:11px 14px;font-family:var(--mono);font-size:.84rem}
+.meter{height:9px;border-radius:5px;background:var(--line);margin-top:12px;overflow:hidden}
+.meter i{display:block;height:100%;width:0;border-radius:5px}
+.before .meter i{background:var(--red)}.after .meter i{background:var(--teal)}
+.go .meter i{animation:grow 1.2s .5s forwards}
+.cap{font-size:.8rem;color:var(--ink2);margin-top:6px}
+
+/* benefits */
+.ben{margin-top:34px;display:grid;gap:0;border-top:1px solid var(--line)}
+.b{display:grid;grid-template-columns:92px 1fr auto;gap:22px;align-items:center;padding:26px 0;border-bottom:1px solid var(--line)}
+.b svg{width:84px;height:84px}
+.b h4{font-family:var(--serif);font-size:1.25rem;font-weight:800;margin-bottom:4px}
+.b p{color:var(--ink2);font-size:.96rem}
+.chip{font-size:.8rem;padding:6px 14px;border-radius:99px;background:var(--goldSoft);color:var(--ink);white-space:nowrap;font-weight:700}
+
+/* windows & mocks */
+.step{display:grid;grid-template-columns:.8fr 1.2fr;gap:44px;align-items:center;margin-top:64px}
+.step.rev{grid-template-columns:1.2fr .8fr}
+.step.rev .st{order:2}
+.badge{display:inline-grid;place-items:center;width:46px;height:46px;border-radius:50%;background:var(--accBg);color:var(--accFg);font-family:var(--serif);font-weight:800;font-size:1.3rem;margin-bottom:12px}
+.tip{margin-top:16px;padding:12px 16px;border-left:3px solid var(--gold);background:var(--goldSoft);font-size:.9rem;line-height:1.7;border-radius:0 8px 8px 0}
+.win{background:#fff;color:#1B2338;border:1px solid #CBD2E2;border-radius:12px;overflow:hidden;position:relative;box-shadow:0 24px 48px -26px rgba(16,27,51,.5);font-size:.85rem;line-height:1.5}
+.win .bar{background:#EEF0F6;height:34px;display:flex;gap:6px;align-items:center;padding:0 12px}
+.win .bar i{background:#C8CEDC}
+.url{margin-left:10px;background:#fff;border-radius:99px;padding:2px 14px;font-size:.74rem;color:#5B6580;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gh{height:340px}
+.gh .h{position:absolute;left:16px;top:48px;font-size:1.05rem}
+.gh .h b{color:#2459C8}
+.gh .code{position:absolute;right:14px;top:80px;height:30px;width:84px;background:#1F883D;color:#fff;border-radius:7px;font-weight:700;display:grid;place-items:center;font-size:.8rem}
+.gh .br{position:absolute;left:16px;top:80px;height:30px;padding:0 12px;border:1px solid #CBD2E2;border-radius:7px;display:grid;place-items:center;background:#F6F7FA;font-size:.8rem}
+.gh .files{position:absolute;left:16px;right:16px;top:124px;border:1px solid #DDE1EC;border-radius:8px}
+.gh .files div{padding:7px 12px;border-bottom:1px solid #E8EBF2;display:flex;gap:10px;font-size:.8rem;color:#33405F}
+.gh .files div:last-child{border:0}
+.dd{position:absolute;right:14px;top:116px;width:200px;background:#fff;border:1px solid #BFC7DA;border-radius:9px;padding:6px;box-shadow:0 14px 30px -10px rgba(16,27,51,.45);opacity:0;z-index:3}
+.dd div{height:36px;display:flex;align-items:center;padding:0 10px;border-radius:6px;font-size:.8rem}
+.dd .dl{font-weight:700}
+.go .dd{animation:fadeIn .25s 1.6s forwards}
+.go .dd .dl{animation:hl .3s 3.8s forwards}
+@keyframes hl{to{background:#DCE8FF;outline:2px solid #D19A1E}}
+.frame{outline:0}
+.go .frame{animation:ring 1.3s .3s 3}
+.lab{position:absolute;background:#14213D;color:#fff;font-weight:700;font-size:.78rem;padding:4px 11px;border-radius:99px;opacity:0;z-index:4;white-space:nowrap}
+.go .lab{animation:pop .4s forwards}
+.cur{position:absolute;width:22px;z-index:6;opacity:0;filter:drop-shadow(0 3px 3px rgba(0,0,0,.35))}
+.go .cur{animation:cur1 6.5s forwards ease-in-out}
+@keyframes cur1{0%{right:60%;top:270px;opacity:0}8%{opacity:1}22%,40%{right:34px;top:88px;opacity:1}58%,100%{right:78px;top:202px;opacity:1}}
+.toast{position:absolute;right:12px;bottom:12px;background:#14213D;color:#fff;padding:9px 14px;border-radius:9px;font-size:.78rem;z-index:5;opacity:0;font-family:var(--mono)}
+.go .toast{animation:pop .4s 4.5s forwards}
+
+.repos{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:30px}
+.repo{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--navy);border-radius:4px 4px 14px 14px;padding:18px 20px}
+.repo.gd2{border-top-color:var(--gold)}
+.repo{display:block}
+.repo .t{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}
+.repo h4{font-family:var(--mono);font-size:.98rem}
+.repo .pin{font-family:var(--mono);font-size:.74rem;background:var(--blueSoft);padding:2px 9px;border-radius:99px;color:var(--ink2)}
+.repo .pills{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.pill{font-family:var(--mono);font-size:.78rem;padding:4px 11px;border-radius:99px;border:1px solid var(--line);background:var(--bg)}
+.explorer{height:auto}
+.ex{padding:14px 16px;font-size:.84rem}
+.ex .r{display:flex;align-items:center;gap:10px;padding:5px 10px;border-radius:7px;margin:2px 0;position:relative}
+.ex .r.d{opacity:.38}
+.ex .r.sel{background:#FBF0D2;outline:2px solid #D19A1E}
+.ex .r em{font-style:normal;margin-left:auto;font-size:.72rem;color:#8590B2}
+.ex .r.sel em{color:#8A5F00;font-weight:700}
+.ex .in{margin-left:24px}
+.fo{width:18px;height:14px;background:#E6B84A;border-radius:2px 4px 3px 3px;flex:none;position:relative}
+.fo::before{content:"";position:absolute;left:0;top:-3px;width:8px;height:4px;background:#E6B84A;border-radius:2px 2px 0 0}
+.fi{width:13px;height:16px;border:1.5px solid #5B6580;border-radius:2px;flex:none}
+.skmd{background:#0B1222;color:#DCE3F4;font-family:var(--mono);font-size:.8rem;line-height:1.8;border-radius:12px;padding:14px 16px 14px 0;position:relative;overflow:hidden}
+.skmd .l{display:flex;gap:14px}
+.skmd .l span:first-child{width:34px;text-align:right;color:#56627F;flex:none}
+.skmd .scan{position:absolute;left:0;right:0;height:30px;top:0;background:rgba(227,190,98,.16);border-top:1px solid #E3BE62;border-bottom:1px solid #E3BE62;animation:scan 4.5s linear infinite alternate}
+.flag{background:rgba(255,141,118,.16);outline:1px dashed #FF8D76;border-radius:3px}
+.chk{display:grid;gap:10px;margin-top:18px}
+.chk label{display:flex;gap:12px;align-items:flex-start;cursor:pointer;background:var(--surface);border:1px solid var(--line);padding:11px 14px;border-radius:10px;font-size:.92rem;line-height:1.6}
+.chk input{accent-color:var(--teal);width:18px;height:18px;margin-top:3px;flex:none}
+.chk label:has(input:checked){border-color:var(--teal);background:color-mix(in srgb,var(--teal) 10%,var(--surface))}
+
+/* path tabs */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 14px}
+.tab{border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:9px 18px;border-radius:99px;cursor:pointer;font-family:inherit;font-size:.92rem;font-weight:500}
+.tab[aria-selected="true"]{background:var(--accBg);color:var(--accFg);border-color:var(--accBg);font-weight:700}
+.pathbox{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:stretch}
+.ptree{background:#0B1222;color:#DCE3F4;border-radius:14px;padding:20px 22px;font-family:var(--mono);font-size:.84rem;line-height:1.85;overflow-x:auto;white-space:pre}
+.ptree .h{color:#E3BE62;font-weight:700}
+.pexp{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+.pexp h4{font-size:1rem;margin-bottom:6px}
+.pexp p{color:var(--ink2);font-size:.92rem}
+.pexp .full{font-family:var(--mono);font-size:.82rem;background:var(--blueSoft);padding:10px 12px;border-radius:8px;margin:10px 0;word-break:break-all}
+.copydiag{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:6px 20px;margin-top:26px}
+.cd{display:grid;grid-template-columns:34px minmax(0,1fr) 90px minmax(0,1fr);gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:.82rem}
+.cd:last-child{border:0}
+.cd .ab{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-family:var(--sans);font-weight:700;font-size:.78rem;background:var(--navy);color:#fff}
+.cd .ab.B{background:var(--gold);color:#fff}
+.cd .ar{height:10px;background:repeating-linear-gradient(90deg,var(--gold) 0 8px,transparent 8px 16px);-webkit-mask:linear-gradient(90deg,#000 0 80%,transparent 80%);mask:linear-gradient(90deg,#000 0 80%,transparent 80%);position:relative;height:3px;animation:dashflow 1s linear infinite}
+.cd .ar::after{content:"";position:absolute;right:0;top:-6px;border-left:12px solid var(--gold);border-top:7px solid transparent;border-bottom:7px solid transparent;-webkit-mask:none;mask:none}
+.cd .ar{overflow:visible;-webkit-mask:none;mask:none}
+.cd .to{color:var(--ink2)}
+.okng{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:26px}
+.on{border-radius:14px;padding:16px 18px;background:var(--surface);border:1.5px solid var(--line);font-size:.86rem}
+.on.g{border-color:var(--teal)}.on.x{border-color:var(--red)}
+.on .m{font-weight:700;font-size:1rem;margin-bottom:6px}
+.on.g .m{color:var(--teal)}.on.x .m{color:var(--red)}
+.on code{display:block;background:var(--blueSoft);padding:8px 10px;border-radius:7px;margin:6px 0;word-break:break-all;font-size:.76rem}
+.trouble{display:grid;gap:0;margin-top:24px;max-width:560px}
+.tr{display:flex;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px;position:relative;font-size:.92rem}
+.tr + .tr{margin-top:26px}
+.tr + .tr::before{content:"";position:absolute;left:26px;top:-26px;height:26px;width:3px;background:repeating-linear-gradient(0deg,var(--gold) 0 6px,transparent 6px 12px);animation:dashv .8s linear infinite}
+.tr + .tr::after{content:"";position:absolute;left:19px;top:-8px;border-top:9px solid var(--gold);border-left:8px solid transparent;border-right:8px solid transparent}
+.tr .nn{width:28px;height:28px;border-radius:50%;background:var(--accBg);color:var(--accFg);display:grid;place-items:center;font-weight:700;font-size:.82rem;flex:none}
+.tr.start{background:var(--goldSoft);border-color:var(--gold);font-weight:700}
+
+.note{margin-top:30px;border:1.5px dashed var(--gold);border-radius:14px;padding:22px 26px;background:var(--surface)}
+.note h4{font-family:var(--serif);font-size:1.2rem;margin-bottom:6px}
+.note p{color:var(--ink2);font-size:.95rem}
+
+/* skills */
+.pipe{display:flex;align-items:flex-start;margin:34px 0 10px;overflow-x:auto;padding:6px 4px 14px}
+.pn{flex:none;width:118px;text-align:center}
+.pn .c{width:58px;height:58px;border-radius:50%;margin:0 auto 8px;display:grid;place-items:center;font-family:var(--serif);font-weight:800;font-size:1.3rem;color:#fff;background:var(--navy);border:3px solid var(--surface);box-shadow:0 0 0 2px var(--navy)}
+.pn.B .c{background:var(--gold);box-shadow:0 0 0 2px var(--gold)}
+.pn.late .c{opacity:.75;border-style:dashed}
+.pn b{display:block;font-family:var(--mono);font-size:.74rem;line-height:1.4;word-break:break-all}
+.pn small{display:block;color:var(--ink2);font-size:.76rem;line-height:1.4;margin-top:2px}
+.pc{flex:1;min-width:20px;height:3px;margin-top:28px;background:repeating-linear-gradient(90deg,var(--gold) 0 8px,transparent 8px 16px);animation:dashflow .9s linear infinite}
+.legend{display:flex;gap:18px;font-size:.84rem;color:var(--ink2);flex-wrap:wrap}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.stabs{display:flex;gap:6px;overflow-x:auto;margin-top:30px;padding-bottom:4px;border-bottom:1px solid var(--line)}
+.stab{flex:none;border:0;background:transparent;color:var(--ink2);padding:12px 16px;font-family:var(--mono);font-size:.84rem;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-5px}
+.stab[aria-selected="true"]{color:var(--ink);font-weight:700;border-bottom-color:var(--gold)}
+.sk{padding:30px 0 6px}
+.sk[hidden]{display:none}
+.sk-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+.sk-head h3{font-family:var(--mono);font-size:1.5rem;margin:0}
+.sk-head .tag{font-size:.78rem;padding:3px 11px;border-radius:99px;background:var(--navy);color:#fff}
+.sk-head .tag.B{background:var(--gold)}
+.sk-tl{font-family:var(--serif);font-size:1.2rem;font-weight:800;margin-bottom:22px}
+.sk-grid{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:start}
+.vis{background:var(--navy);border-radius:16px;padding:22px;min-height:300px;position:relative;overflow:hidden;color:#EAEFFA;font-size:.82rem}
+.vis .rp{position:absolute;right:12px;top:12px;background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.25);z-index:3}
+.sk h4{font-size:.95rem;color:var(--gold);margin:0 0 4px}
+.sk .txt p{margin-bottom:16px;font-size:.98rem}
+.prompt{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:0 12px 12px 0;padding:14px 16px;margin-bottom:16px}
+.prompt p{font-family:var(--mono);font-size:.84rem!important;margin:0!important;line-height:1.75}
+.cp{margin-top:10px;font-family:inherit;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:99px;padding:5px 14px;font-size:.8rem;cursor:pointer}
+.meta{display:grid;grid-template-columns:90px 1fr;gap:6px 14px;font-size:.84rem;margin:0 0 14px;color:var(--ink2)}
+.meta dt{font-weight:700;color:var(--ink)}.meta dd{margin:0}
+.warn{border-radius:10px;padding:11px 14px;background:color-mix(in srgb,var(--red) 10%,var(--surface));border:1px solid color-mix(in srgb,var(--red) 40%,var(--line));font-size:.88rem;line-height:1.7}
+.warn b{color:var(--red)}
+/* illustrations */
+.sheet{background:#fff;color:#1B2338;border-radius:10px;padding:14px 16px;font-size:.78rem}
+.sheet .hd{font-family:var(--mono);font-size:.74rem;color:#5B6580;padding-bottom:8px;border-bottom:1px solid #E4E8F1;margin-bottom:10px}
+.sr{display:grid;grid-template-columns:64px 1fr;gap:10px;align-items:center;margin:11px 0}
+.sr span{font-weight:700;font-size:.76rem}
+.sr em{display:block;height:9px;border-radius:5px;background:#CDD5EA;width:0}
+.sr em+em{margin-top:5px;background:#E3E8F4}
+.go .sr em{animation:grow .8s calc(var(--i)*.7s + .3s) forwards}
+.q{position:absolute;right:20px;bottom:20px;background:#F7E7BC;color:#14213D;font-weight:700;border-radius:12px 12px 2px 12px;padding:8px 12px;font-size:.78rem}
+.cal{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:20px}
+.cal .w{background:rgba(255,255,255,.07);border-radius:10px;padding:10px 8px;min-height:150px}
+.cal .w b{display:block;font-size:.76rem;color:#E3BE62;margin-bottom:8px}
+.cal .ch{display:block;background:#F2F4FA;color:#14213D;border-radius:6px;padding:5px 7px;margin-bottom:6px;font-size:.72rem;line-height:1.4;font-weight:700}
+.cal .ch.g{background:#F7E7BC}
+.th{display:flex;justify-content:space-between;color:#9FAACB;font-size:.74rem;margin-top:12px}
+.lp{background:#fff;color:#1B2338;border-radius:10px;padding:18px;margin-top:16px;position:relative}
+.lp .hh{height:14px;border-radius:4px;background:#14213D;width:0;margin-bottom:7px}
+.go .lp .hh{animation:grow .8s calc(var(--i)*.5s + .3s) forwards}
+.lp .v{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}
+.lp .v div{height:46px;border-radius:8px;background:#E7ECF8}
+.lp .cta{display:inline-block;background:#A27A28;color:#fff;font-weight:700;padding:8px 22px;border-radius:99px;font-size:.8rem}
+.go .lp .cta{animation:pop .4s 2.2s forwards,ring 1.4s 2.7s 3}
+.lp .cta{opacity:0}
+.an{position:absolute;right:10px;background:#14213D;color:#fff;font-size:.7rem;font-weight:700;padding:2px 9px;border-radius:99px;opacity:0}
+.go .an{animation:pop .4s calc(var(--i)*.6s + .6s) forwards}
+.fan{display:grid;grid-template-columns:1fr 54px 1.1fr;align-items:center;gap:6px;margin-top:20px}
+.art{background:#fff;color:#1B2338;border-radius:10px;padding:14px}
+.art i{display:block;height:7px;border-radius:4px;background:#CDD5EA;margin:8px 0}
+.art i:first-child{height:11px;width:70%;background:#14213D}
+.fan .arr{height:3px;background:repeating-linear-gradient(90deg,#E3BE62 0 7px,transparent 7px 14px);animation:dashflow .8s linear infinite}
+.posts{display:grid;gap:6px}
+.po{background:#F2F4FA;color:#14213D;border-radius:8px;padding:6px 10px;font-size:.72rem;font-weight:700;display:flex;justify-content:space-between;gap:8px}
+.po.ig{background:#F7E7BC}
+.po small{font-weight:500;color:#5B6580}
+.phone{width:170px;margin:12px auto 0;background:#fff;border-radius:24px;border:6px solid #0A0F1D;padding:12px;color:#1B2338;position:relative}
+.phone .hero2{height:56px;border-radius:10px;background:#14213D;margin-bottom:10px;transform:translateY(-12px)}
+.phone i{display:block;height:6px;border-radius:3px;background:#CDD5EA;margin:6px 0;width:0}
+.go .phone i{animation:grow .6s calc(var(--i)*.35s + .8s) forwards}
+.go .phone .hero2{animation:down .6s .2s forwards}
+@keyframes down{to{transform:none}}
+.phone .bt{margin-top:10px;background:#A27A28;border-radius:99px;height:22px;opacity:0}
+.go .phone .bt{animation:pop .4s 2.4s forwards}
+.pal{display:flex;gap:8px;justify-content:center;margin-top:14px}
+.pal i{width:20px;height:20px;border-radius:50%;display:block}
+.br2{background:#fff;color:#1B2338;border-radius:10px;overflow:hidden;position:relative;margin-top:16px}
+.br2 .bar{background:#EEF0F6;height:24px}
+.br2 .pg{padding:12px;height:130px;position:relative;overflow:hidden}
+.br2 .pg i{display:block;height:8px;border-radius:4px;background:#CDD5EA;margin:8px 0}
+.br2 .pg .sc{position:absolute;left:0;right:0;height:3px;background:#16756A;box-shadow:0 0 12px #16756A;animation:scan 2.2s linear infinite alternate}
+.tl{display:grid;gap:8px;margin-top:14px}
+.tl div{display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.07);border-radius:8px;padding:7px 11px;font-size:.8rem}
+.tl .t{width:20px;height:20px;border-radius:50%;background:#59D3B0;color:#0B1222;display:grid;place-items:center;font-weight:700;font-size:.74rem;flex:none}
+.cyc{position:relative;width:260px;height:260px;margin:6px auto 0;max-width:100%}
+.cyc .rg{position:absolute;inset:34px;border-radius:50%;border:3px dashed #E3BE62;animation:spin 14s linear infinite}
+.cyc .ct{position:absolute;inset:0;display:grid;place-items:center;text-align:center;font-weight:700;font-size:.82rem;line-height:1.5}
+.cyc .nd{position:absolute;background:#F2F4FA;color:#14213D;font-weight:700;font-size:.76rem;padding:5px 12px;border-radius:99px}
+.cyc .nd:nth-child(2){left:50%;top:0;transform:translateX(-50%)}
+.cyc .nd:nth-child(3){right:0;top:50%;transform:translateY(-50%)}
+.cyc .nd:nth-child(4){left:50%;bottom:0;transform:translateX(-50%)}
+.cyc .nd:nth-child(5){left:0;top:50%;transform:translateY(-50%)}
+
+/* roadmap */
+.road{margin-top:36px;position:relative;padding-left:56px;max-width:760px}
+.road::before{content:"";position:absolute;left:21px;top:10px;bottom:10px;width:3px;background:var(--line)}
+.road .fillb{position:absolute;left:21px;top:10px;width:3px;height:0;background:var(--gold)}
+.go .road .fillb,.road.go .fillb{animation:growh 3.2s .2s forwards linear}
+@keyframes growh{to{height:calc(100% - 20px)}}
+.rs{position:relative;padding:0 0 30px}
+.rs .d{position:absolute;left:-56px;top:0;width:44px;height:44px;border-radius:50%;background:var(--surface);border:3px solid var(--gold);display:grid;place-items:center;font-family:var(--serif);font-weight:800;font-size:1.1rem}
+.rs.last .d{border-style:dashed}
+.rs h4{font-family:var(--mono);font-size:1rem;margin:2px 0 2px}
+.rs p{color:var(--ink2);font-size:.92rem}
+.rs .gain{display:inline-block;margin-top:6px;font-size:.8rem;background:var(--goldSoft);padding:3px 12px;border-radius:99px;font-weight:700}
+details{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-top:24px;font-size:.88rem;color:var(--ink2)}
+summary{cursor:pointer;font-weight:700;color:var(--ink)}
+details p{margin-top:8px}
+footer{margin-top:80px;padding:36px 0 56px;background:var(--navy);color:#CFD6EA;font-size:.88rem}
+footer b{color:#fff}
+footer .wrap{display:grid;gap:8px}
+
+@media (max-width:860px){
+  .hero .wrap,.two,.step,.step.rev,.sk-grid,.pathbox,.repos,.okng{grid-template-columns:1fr}
+  .step.rev .st{order:0}
+  .flow{flex-direction:column}
+  .fs,.fs:first-child,.fs:last-child{border-radius:12px;margin-bottom:12px}
+  .fs::after{display:none}
+  .b{grid-template-columns:70px 1fr}.b svg{width:64px;height:64px}.b .chip{grid-column:2;justify-self:start}
+  .cd{grid-template-columns:30px 1fr;gap:6px}.cd .ar{display:none}.cd .to::before{content:"コピー先 ";font-family:var(--sans);color:var(--gold);font-weight:700}
+  .pipe{flex-direction:column;align-items:flex-start;overflow:visible}
+  .pn{width:auto;display:flex;gap:14px;text-align:left;align-items:center}
+  .pn .c{margin:0;flex:none}
+  .pc{width:3px;height:22px;min-width:0;margin:2px 0 2px 28px;flex:none;background:repeating-linear-gradient(0deg,var(--gold) 0 6px,transparent 6px 12px);animation:dashv .8s linear infinite}
+  .brand{display:none}
+  section{padding-top:64px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001s!important;animation-delay:0s!important;animation-iteration-count:1!important;transition:none!important}
+}
+
+/* ===== multi-page additions ===== */
+.page section{padding:56px 0 8px}
+.page section:first-of-type{padding-top:40px}
+.phero{padding:44px 0 6px}
+.phero .grid{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center}
+.crumb{font-size:.84rem;color:var(--ink2);margin-bottom:8px}
+.crumb a{color:var(--ink2)}
+.ptitle{font-family:var(--serif);font-weight:800;font-size:clamp(1.9rem,4.8vw,3rem);line-height:1.35;margin:8px 0 14px;letter-spacing:.02em}
+.skname{font-family:var(--mono);font-weight:700;font-size:clamp(1.6rem,4.4vw,2.7rem);line-height:1.25;margin:6px 0 8px;word-break:break-all}
+.skline{font-family:var(--serif);font-weight:800;font-size:1.25rem;line-height:1.6;margin-bottom:12px}
+.tagrow{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 4px}
+.tg2{font-size:.8rem;padding:4px 12px;border-radius:99px;background:var(--navy);color:#fff}
+.tg2.B{background:var(--gold)}
+.tg2.line{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:18px}
+.chips a{font-size:.84rem;padding:6px 14px;border-radius:99px;border:1px solid var(--line);color:var(--ink2);text-decoration:none;background:var(--surface)}
+.chips a:hover{background:var(--blueSoft);color:var(--ink)}
+.sum p{margin-bottom:14px;max-width:44em}
+.scn{display:grid;grid-template-columns:1fr 1fr;gap:0 44px;margin-top:22px;border-top:1px solid var(--line)}
+.scn div{padding:20px 0 20px 32px;border-bottom:1px solid var(--line);position:relative}
+.scn div::before{content:"▶";position:absolute;left:4px;top:23px;color:var(--gold);font-size:.78rem}
+.scn h4{font-family:var(--serif);font-size:1.08rem;margin-bottom:4px}
+.scn p{color:var(--ink2);font-size:.92rem;line-height:1.75}
+.prep{display:grid;grid-template-columns:1.15fr .85fr;gap:34px;align-items:start;margin-top:22px}
+.exm{margin-top:44px;padding-top:30px;border-top:2px solid var(--ink)}
+.exm:first-of-type{margin-top:26px}
+.exm-h{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+.exl{font-family:var(--serif);font-weight:800;color:var(--gold);font-size:1.1rem}
+.exm h3{margin:0}
+.sit{color:var(--ink2);margin:6px 0 20px;font-size:.96rem}
+.exm-g{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+.exm h4{font-size:.95rem;color:var(--gold);margin:0 0 8px}
+.pt{font-size:.88rem;background:var(--goldSoft);padding:10px 14px;border-radius:0 8px 8px 0;border-left:3px solid var(--gold);line-height:1.7}
+.out{background:#fff;color:#1B2338;border-radius:12px;padding:16px 18px;font-size:.84rem;line-height:1.75;border:1px solid #CBD2E2;box-shadow:0 18px 36px -24px rgba(16,27,51,.5)}
+.out p{margin:0 0 6px}
+.out ul{margin:6px 0;padding-left:1.2em}
+.out .orow{display:grid;grid-template-columns:86px 1fr;gap:10px;padding:8px 0;border-top:1px solid #E4E8F1}
+.out .orow:first-child{border-top:0;padding-top:0}
+.out .orow b{color:#8A6A1F;font-size:.78rem;line-height:1.7}
+.out table{border-collapse:collapse;width:100%;font-size:.8rem}
+.out th{text-align:left;background:#EEF1F8;padding:6px 8px;font-weight:700}
+.out td{padding:6px 8px;border-top:1px solid #E4E8F1;vertical-align:top}
+.vsrow{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}
+.vsb{border-radius:12px;padding:16px 18px;border:1.5px solid var(--line);background:var(--surface);position:relative}
+.vsb.bad{border-color:color-mix(in srgb,var(--red) 55%,var(--line))}
+.vsb.good{border-color:color-mix(in srgb,var(--teal) 60%,var(--line))}
+.vl{display:block;font-weight:700;font-size:.82rem;margin-bottom:6px}
+.bad .vl{color:var(--red)}.good .vl{color:var(--teal)}
+.vsb p{font-size:.9rem;line-height:1.75}
+.good p{font-family:var(--mono);font-size:.8rem}
+.vsp{grid-column:1/-1;color:var(--ink2);font-size:.9rem;margin:-4px 0 6px}
+.cc{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:22px}
+.cc h4{font-family:var(--serif);font-size:1.1rem;margin-bottom:6px}
+.cc ul{list-style:none;margin:0;padding:0}
+.cc li{padding:11px 0 11px 30px;border-bottom:1px solid var(--line);position:relative;font-size:.94rem;line-height:1.7}
+.cc li::before{position:absolute;left:2px;top:11px;font-weight:700}
+.cc .yes li::before{content:"✔";color:var(--teal)}
+.cc .no li::before{content:"✘";color:var(--red)}
+.faq{margin-top:22px;display:grid;gap:10px}
+.faq details{margin:0;padding:0;background:var(--surface)}
+.faq summary{padding:15px 18px;font-weight:700;color:var(--ink);list-style:none;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-size:1.3rem;color:var(--gold);flex:none}
+.faq details[open] summary::after{content:"−"}
+.faq details p{padding:0 18px 16px;margin:0;color:var(--ink2);font-size:.94rem;line-height:1.85}
+.metat{display:grid;grid-template-columns:140px 1fr;border-top:1px solid var(--line);margin-top:22px}
+.metat dt,.metat dd{margin:0;padding:12px 4px;border-bottom:1px solid var(--line);font-size:.92rem;line-height:1.7}
+.metat dt{font-weight:700}
+.metat dd{color:var(--ink2)}
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:64px 0 0}
+.pg{display:block;padding:20px 24px;border:1px solid var(--line);background:var(--surface);text-decoration:none;color:var(--ink);border-radius:14px}
+.pg:hover{border-color:var(--gold)}
+.pg small{color:var(--ink2);display:block;margin-bottom:2px}
+.pg b{font-family:var(--mono);font-size:1.02rem}
+.pg span{display:block;color:var(--ink2);font-size:.84rem;margin-top:2px}
+.pg.next{text-align:right}
+.pg.empty{visibility:hidden}
+.codebox{background:#0B1222;color:#DCE3F4;font-family:var(--mono);font-size:.86rem;line-height:1.8;padding:14px 18px;border-radius:12px;white-space:pre;overflow-x:auto;margin:18px 0 8px}
+.skl{margin-top:26px;border-top:1px solid var(--line)}
+.skl a{display:grid;grid-template-columns:54px 1fr auto;gap:18px;align-items:center;padding:20px 6px;border-bottom:1px solid var(--line);text-decoration:none;color:var(--ink)}
+.skl a:hover{background:var(--blueSoft)}
+.skl .nb{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--navy);color:#fff;font-family:var(--serif);font-weight:800;font-size:1.2rem}
+.skl .nb.B{background:var(--gold)}
+.skl b{font-family:var(--mono);font-size:1.02rem;display:block}
+.skl span.d{color:var(--ink2);font-size:.9rem}
+.skl .go2{font-size:.82rem;color:var(--gold);font-weight:700;white-space:nowrap}
+.ctab{width:100%;border-collapse:collapse;margin-top:22px;font-size:.92rem}
+.ctab th{text-align:left;padding:10px 12px;background:var(--blueSoft);font-weight:700}
+.ctab td{padding:12px;border-bottom:1px solid var(--line);vertical-align:top}
+.ctab td a{color:var(--ink);font-family:var(--mono);font-weight:700}
+.glos{display:grid;grid-template-columns:200px 1fr;border-top:1px solid var(--line);margin-top:26px}
+.glos dt,.glos dd{margin:0;padding:16px 6px;border-bottom:1px solid var(--line)}
+.glos dt{font-family:var(--mono);font-weight:700;font-size:.92rem}
+.glos dd{color:var(--ink2);font-size:.94rem;line-height:1.85}
+.walk{margin-top:26px;border-top:1px solid var(--line)}
+.walk a{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;padding:22px 6px;border-bottom:1px solid var(--line);text-decoration:none;color:var(--ink)}
+.walk a:hover{background:var(--blueSoft)}
+.walk b{font-family:var(--serif);font-size:1.25rem;display:block}
+.walk span.d{color:var(--ink2);font-size:.92rem}
+.walk .go2{color:var(--gold);font-weight:700;font-size:.84rem;white-space:nowrap}
+.case .rs{padding-bottom:34px}
+.case .cs{margin-top:8px;font-size:.88rem;line-height:1.75}
+.case .cs b{display:inline-block;min-width:3.6em;color:var(--gold);font-size:.8rem}
+.case .cs code{background:var(--blueSoft);padding:.1em .4em;border-radius:5px;font-size:.8rem}
+.case .rs a.lk{display:inline-block;margin-top:8px;font-size:.84rem;color:var(--ink);font-weight:700}
+@media (max-width:860px){
+  .phero .grid,.exm-g,.prep,.vsrow,.cc,.scn,.pager{grid-template-columns:1fr}
+  .metat{grid-template-columns:100px 1fr}
+  .glos{grid-template-columns:1fr}
+  .glos dt{border-bottom:0;padding-bottom:0}
+  .skl a{grid-template-columns:46px 1fr}
+  .skl .go2{display:none}
+  .pg.next{text-align:left}
+  .pg.empty{display:none}
+}
+
+.nav a[aria-current="page"]{background:var(--accBg);color:var(--accFg);font-weight:700}
+.route[hidden]{display:none}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="wrap">
+    <a class="brand" href="#/" style="color:inherit;text-decoration:none">Skills マニュアル</a>
+    <nav class="nav" aria-label="メニュー"><a href="#/" aria-current="page">ホーム</a><a href="#/install">導入ガイド</a><a href="#/skills">7つのSkill</a><a href="#/start">使い始め方</a><a href="#/glossary">用語集</a></nav>
+    <button class="tg" id="theme" aria-label="表示テーマを切り替え">◐</button>
+  </div>
+</header>
+<main class="route" data-route="/glossary" data-title="用語集" hidden>
+
+<div class="phero"><div class="wrap">
+  <p class="crumb"><a href="#/">ホーム</a> / 用語集</p>
+  <p class="kick">▼ 用語集</p>
+  <h1 class="ptitle">つまずきやすい言葉を、やさしく</h1>
+  <p class="lead">マニュアルに出てくる言葉の意味を、まとめました。分からない言葉が出てきたら、ここへ戻ってきてください。</p>
+</div></div>
+<section><div class="wrap"><dl class="glos"><dt>Skill（スキル）</dt><dd>Claudeに渡す、仕事の取扱説明書。手順や品質の基準が書かれたフォルダーで、必要なときに読みに行って使います。</dd><dt>SKILL.md</dt><dd>Skillの中心になるファイル。名前、説明、進め方が書かれています。Skillを入れるときは、このファイルがあるフォルダーごとコピーします。</dd><dt>Claude Code</dt><dd>パソコンで動かす、Claudeのコーディング・作業用のツール。この資料のSkillは、ここで使う前提です。</dd><dt>リポジトリ</dt><dd>GitHub上で、ファイルや変更の履歴をまとめて保管している場所。今回は、Skillの配布元として使います。</dd><dt>GitHub（ギットハブ）</dt><dd>プログラムや資料を公開・共有するサービス。ここからZIPで取得します。</dd><dt>ZIP / 展開</dt><dd>複数のファイルをひとまとめに圧縮した形式がZIP。使うときに元のフォルダーの形に戻すのが「展開」です。</dd><dt>コミット</dt><dd>リポジトリの、ある時点の状態を記録したもの。コミットを固定すると、確認した内容を、そのまま再現できます。</dd><dt>フォルダー（ディレクトリ）</dt><dd>ファイルを入れておく入れ物。Skillはフォルダー単位で置きます。</dd><dt>プロジェクト</dt><dd>特定の仕事のための作業フォルダー。プロジェクト用のSkillは、その中の .claude/skills に置きます。</dd><dt>ターミナル</dt><dd>文字で命令を入力する画面。PowerShellやBashなどがあります。この資料のコピー手順は、手動でもできます。</dd><dt>/skills</dt><dd>Claude Codeで、使えるSkillの一覧を表示するための入力。導入したSkillが認識されたかの確認に使います。</dd><dt>/reload-skills</dt><dd>新しく置いたSkillを、再起動せずに読み込み直すための入力。対応していない版では、Claude Codeの再起動を。</dd><dt>LP（ランディングページ）</dt><dd>商品や講座を紹介して、申し込みなどの行動につなげる、1ページ完結のWebページ。</dd><dt>ローカル</dt><dd>自分のパソコンの中だけで動かしている状態。公開前の確認は、ここで行います。</dd><dt>ホスティング</dt><dd>作ったWebページを、インターネット上に公開するための場所を借りること。この資料では、別途の設定です。</dd><dt>Playwright</dt><dd>ブラウザを自動で操作して、画面の確認ができるツール。webapp-testingがPython版を使います。</dd><dt>Python</dt><dd>プログラミング言語の1つ。webapp-testingやskill-creatorの補助ツールの実行に使います。</dd><dt>MCP</dt><dd>Claudeが外部のサービスとつながるための仕組み。実際の予約投稿など、Skillだけではできないことを補います。</dd><dt>API</dt><dd>ソフトウェア同士がやり取りするための窓口。外部サービスへの投稿などで使われます。</dd><dt>ライセンス（MIT / Apache-2.0）</dt><dd>使ってよい条件を示すもの。今回のSkillは、MITとApache-2.0。ライセンスのファイルは、消さずに一緒に残します。</dd><dt>依存関係</dt><dd>動かすために、別途必要なもの。例えば、webapp-testingのPythonやPlaywrightです。</dd><dt>ダミーデータ</dt><dd>実在しない、試験用の情報。個人情報の代わりに使って、安全に動作を確認します。</dd><dt>WSL</dt><dd>Windowsの中でLinux環境を動かす仕組み。保存先やコマンドが、Windowsネイティブとは別になります。</dd><dt>claude CLI</dt><dd>ターミナルから使う、Claudeの命令実行ツール。skill-creatorの説明文の自動評価で使い、利用枠を消費します。</dd></dl></div></section>
+
+</main>
+<main class="route" data-route="/" data-title="トップ" hidden>
+<div class="hero">
+<div class="wrap">
+<div>
+<p class="kick">▼ Claude Code 初心者向け</p>
+<h1>Claude Codeに、<br/>仕事の型を覚えさせよう</h1>
+<p class="lead">ダウンロードして、フォルダーをコピーして、認識を確認する。Skillの導入は、実はこの流れだけ。Gitの知識もいりません。画面イメージとアニメーションで、1つずつ迷わず進めます。</p>
+<div class="btns">
+<a class="btn pri" href="#/install">ダウンロード手順を見る</a>
+<a class="btn" href="#/skills">7つのSkillを見る</a>
+</div>
+</div>
+<div class="stage" data-anim="" data-loop="11000" id="heroStage">
+<div class="st-src">
+<svg aria-hidden="true" viewbox="0 0 54 44"><path d="M2 8a4 4 0 0 1 4-4h14l5 6h23a4 4 0 0 1 4 4v22a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" fill="#E6B84A"></path><path d="M2 16h50v20a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" fill="#F3CB66"></path></svg>
+<div><b>frontend-design/</b><small>ダウンロードして展開したフォルダー</small></div>
+</div>
+<div class="st-path"><div class="doc">SKILL.md</div></div>
+<div class="term">
+<div class="bar"><i></i><i></i><i></i><span>Claude Code</span></div>
+<div class="body">
+<div><span class="gd">&gt;</span> <span class="type" style="--n:7;--d0:2.8s">/skills</span></div>
+<div class="ln" style="--i:0;--d0:3.9s"><span class="dim">見つかったSkill</span></div>
+<div class="ln" style="--i:1;--d0:3.9s"><span class="ok">✔</span> product-marketing</div>
+<div class="ln" style="--i:2;--d0:3.9s"><span class="ok">✔</span> copywriting</div>
+<div class="ln" style="--i:3;--d0:3.9s"><span class="ok">✔</span> frontend-design <span class="gd">NEW</span></div>
+<div class="ln caret" style="--i:4;--d0:3.9s"><span class="dim">ほか4件</span></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="wrap"><div class="flow" data-anim="" id="flow">
+<div class="fs" style="--i:0"><div class="n">1</div><h4>ZIPを取得</h4><p>GitHubからDownload ZIP。展開はダウンロード用フォルダーへ。</p><span class="bar"></span></div>
+<div class="fs" style="--i:1"><div class="n">2</div><h4>中身をチェック</h4><p>SKILL.mdと付属ファイルを読んで、安全面を確認。</p><span class="bar"></span></div>
+<div class="fs" style="--i:2"><div class="n">3</div><h4>フォルダーごとコピー</h4><p>.claude/skills の中へ、名前そのままで配置。</p><span class="bar"></span></div>
+<div class="fs" style="--i:3"><div class="n">4</div><h4>認識を確認</h4><p>/skills で名前が並べばOK。まずは短い試運転から。</p><span class="bar"></span></div>
+</div></div><section id="what">
+<div class="wrap">
+<p class="kick">▼ 基礎知識</p>
+<h2>Skillは、AIのための<br/>取扱説明書フォルダー</h2>
+<p class="lead">中心にあるのは SKILL.md という1枚の手順書。Claudeは必要になったときだけ読みに行き、書いてある通りの進め方で仕事を始めます。</p>
+<div class="two">
+<div class="tree" data-anim="" id="anat">
+<div class="root">📁 frontend-design/ <span style="font-family:var(--sans);color:var(--gold);font-size:.8rem;font-weight:700">この全体が1つのSkill</span></div>
+<div class="row hot rv" style="--i:0"><b>SKILL.md</b><span>いちばん大事な手順書。名前と説明、進め方が書いてある。</span></div>
+<div class="row rv" style="--i:1"><b>scripts/</b><span>必要なときだけ動く補助プログラム。ないSkillもある。</span></div>
+<div class="row rv" style="--i:2"><b>references/</b><span>参考資料や詳しい説明。Skillごとに名前や中身が違う。</span></div>
+<div class="row rv" style="--i:3"><b>LICENSE.txt</b><span>使ってよい条件の書類。消さずに一緒に残す。</span></div>
+<button class="rp" data-replay="#anat" style="margin-top:12px">もう一度見る</button>
+</div>
+<div class="ba" data-anim="" id="ba">
+<div class="pane before">
+<h4>▼ Skillがないとき</h4>
+<div class="chat">毎回、長い指示を貼り付け…</div>
+<div class="sk-lines" style="margin-top:8px"><i></i><i></i><i></i><i></i><i></i></div>
+<div class="meter"><i style="--w:92%"></i></div>
+<p class="cap">毎回の準備の手間。使うたびに積み重なる。</p>
+</div>
+<div class="pane after">
+<h4>▼ Skillがあるとき</h4>
+<div class="chat">/copywriting この講座の販売ページを下書きして</div>
+<div class="meter"><i style="--w:14%"></i></div>
+<p class="cap">一言で呼び出し。手順書はClaudeが読みに行く。</p>
+</div>
+</div>
+</div>
+</div>
+</section><section id="why">
+<div class="wrap">
+<p class="kick">▼ 導入のメリット</p>
+<h2>入れておくと、毎日の作業が軽くなる</h2>
+<div class="ben">
+<div class="b">
+<svg aria-hidden="true" viewbox="0 0 84 84"><rect fill="none" height="60" rx="5" stroke="currentColor" stroke-width="3" style="color:var(--line)" width="46" x="10" y="12"></rect><path d="M20 28h26M20 38h26M20 48h16" stroke="var(--line)" stroke-linecap="round" stroke-width="3"></path><circle cx="58" cy="56" fill="var(--gold)" r="20"></circle><path d="M48 56l7 7 12-14" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"></path></svg>
+<div><h4>長い指示を、貼らなくていい</h4><p>「誰向けで、どんな口調で」の説明を毎回する必要なし。呼び出しは一言で済みます。</p></div>
+<span class="chip">時短</span>
+</div>
+<div class="b">
+<svg aria-hidden="true" viewbox="0 0 84 84"><g fill="none" stroke-linecap="round" stroke-width="3.5"><path d="M10 60c10 0 10-30 20-30s10 30 20 30 10-30 24-30" opacity=".35" stroke="var(--red)"></path><path d="M10 44h64" stroke="var(--teal)"></path></g><circle cx="42" cy="44" fill="var(--teal)" r="7"></circle></svg>
+<div><h4>出来栄えのブレが減る</h4><p>同じ手順書を読むので、今日と来週で仕上がりが変わりにくい。安定した品質が手に入ります。</p></div>
+<span class="chip">安定</span>
+</div>
+<div class="b">
+<svg aria-hidden="true" viewbox="0 0 84 84"><path d="M42 8l10 22 24 3-18 16 5 24-21-12-21 12 5-24L8 33l24-3z" fill="var(--goldSoft)" stroke="var(--gold)" stroke-linejoin="round" stroke-width="3"></path></svg>
+<div><h4>定番の考え方を借りられる</h4><p>マーケやデザインの基本の型が最初から入っています。ゼロから設計する時間をまるごと節約。</p></div>
+<span class="chip">型を借りる</span>
+</div>
+<div class="b">
+<svg aria-hidden="true" viewbox="0 0 84 84"><g fill="none" stroke="var(--gold)" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5"><path d="M14 66V50M34 66V38M54 66V26M74 66V14"></path></g><path d="M12 46l22-14 20-10 20-12" fill="none" stroke="var(--teal)" stroke-dasharray="2 7" stroke-linecap="round" stroke-width="3"></path></svg>
+<div><h4>自分の仕事に育てられる</h4><p>慣れたら、自分専用の手順をSkill化。使うほど、作業がどんどん速くなっていきます。</p></div>
+<span class="chip">成長</span>
+</div>
+</div>
+</div>
+</section>
+<section id="guide">
+  <div class="wrap">
+    <p class="kick">▼ このサイトの歩き方</p>
+    <h2>気になるところから、読み進めて大丈夫</h2>
+    <p class="lead">全体の流れを知りたい人は、導入ガイドから。個別のSkillを詳しく知りたい人は、7つのSkillのページへ。それぞれに具体例と出力イメージがあります。</p>
+    <div class="walk">
+      <a href="#/install"><div><b>導入ガイド</b><span class="d">ダウンロード、確認、コピー、認識の確認まで。画面イメージ付きで1ステップずつ。</span></div><span class="go2">ページを開く</span></a>
+      <a href="#/skills"><div><b>7つのSkill</b><span class="d">それぞれの使い道と、具体的な指示の例、出力イメージ、よくある質問を詳しく解説。</span></div><span class="go2">ページを開く</span></a>
+      <a href="#/start"><div><b>使い始め方</b><span class="d">架空の講座を例に、7つのSkillで1周する流れを紹介。注意点のチェックリストも。</span></div><span class="go2">ページを開く</span></a>
+      <a href="#/glossary"><div><b>用語集</b><span class="d">ZIP、コミット、MCPなど、初心者がつまずきやすい言葉を、やさしく説明。</span></div><span class="go2">ページを開く</span></a>
+    </div>
+  </div>
+</section>
+
+</main>
+<main class="route" data-route="/install" data-title="導入ガイド" hidden>
+
+<div class="phero"><div class="wrap">
+  <p class="crumb"><a href="#/">ホーム</a> / 導入ガイド</p>
+  <p class="kick">▼ 導入ガイド</p>
+  <h1 class="ptitle">ダウンロードから、認識の確認まで</h1>
+  <p class="lead">GitHubからZIPを取得して、フォルダーをコピーして、Claude Codeで確認する。画面イメージとアニメーションで、1ステップずつ進めましょう。</p>
+  <div class="chips"><a href="#download">STEP 1・2 ダウンロードと確認</a><a href="#install">STEP 3・4 コピーと認識の確認</a></div>
+</div></div>
+<section id="download">
+<div class="wrap">
+<p class="kick">▼ STEP 1・2</p>
+<h2>GitHubからSkillを手に入れる</h2>
+<p class="lead">今回は2か所から取得します。どちらもコミットを固定したページなので、確認済みの内容をそのまま再現できます。</p>
+<div class="repos">
+<div class="repo">
+<div class="t"><h4>A　anthropics/skills</h4><span class="pin">固定 8a1541c</span></div>
+<p style="font-size:.9rem;color:var(--ink2)">Anthropic公式のリポジトリ。</p>
+<div class="pills"><span class="pill">frontend-design</span><span class="pill">webapp-testing</span><span class="pill">skill-creator</span></div>
+</div>
+<div class="repo gd2">
+<div class="t"><h4>B　marketingskills</h4><span class="pin">固定 dda3841</span></div>
+<p style="font-size:.9rem;color:var(--ink2)">マーケティング系のSkillがそろったリポジトリ。</p>
+<div class="pills"><span class="pill">product-marketing</span><span class="pill">content-strategy</span><span class="pill">copywriting</span><span class="pill">social</span></div>
+</div>
+</div>
+<div class="step">
+<div class="st">
+<span class="badge">1</span>
+<h3>Code から Download ZIP</h3>
+<p>リポジトリのページで緑の「Code」ボタンを押し、一番下の「Download ZIP」を選びます。ダウンロードしたら展開。</p>
+<div class="tip">展開先はダウンロード用フォルダーで十分。まだClaudeのskillsフォルダーには置きません。ZIPにはほかのSkillも入っていますが、使うのは選んだ7つだけです。</div>
+<p style="margin-top:14px"><button class="rp" data-replay="#m1">もう一度見る</button></p>
+</div>
+<div class="win gh" data-anim="" id="m1">
+<div class="bar"><i></i><i></i><i></i><span class="url">github.com/anthropics/skills</span></div>
+<div class="h"><b>anthropics</b> / <b>skills</b></div>
+<div class="br">main ▾</div>
+<div class="code frame">&lt;&gt; Code ▾</div>
+<div class="files">
+<div><span>📁</span>skills</div><div><span>📁</span>spec</div><div><span>📁</span>template</div><div><span>📄</span>README.md</div>
+</div>
+<div class="dd"><div>Clone</div><div>GitHub Desktopで開く</div><div class="dl">⬇ Download ZIP</div></div>
+<span class="lab" style="right:14px;top:46px;animation-delay:.6s">① ここをクリック</span>
+<span class="lab" style="right:14px;top:262px;animation-delay:2.2s">② Download ZIP を選ぶ</span>
+<svg aria-hidden="true" class="cur" viewbox="0 0 22 28"><path d="M2 2l16 14-7 1 4 8-3 2-4-8-6 5z" fill="#14213D" stroke="#fff" stroke-linejoin="round" stroke-width="1.6"></path></svg>
+<div class="toast">skills-8a1541c.zip を保存</div>
+</div>
+</div>
+<div class="step rev">
+<div class="win explorer" data-anim="" id="m2">
+<div class="bar"><i></i><i></i><i></i><span class="url">ダウンロード / skills-8a1541c</span></div>
+<div class="ex">
+<div class="r"><span class="fo"></span>skills</div>
+<div class="in">
+<div class="r d rv" style="--i:0"><span class="fo"></span>algorithmic-art<em>今回は使わない</em></div>
+<div class="r sel pp" style="--i:1"><span class="fo"></span>frontend-design<em>✔ 使う</em></div>
+<div class="r sel pp" style="--i:2"><span class="fo"></span>skill-creator<em>✔ 使う</em></div>
+<div class="r d rv" style="--i:3"><span class="fo"></span>pdf<em>今回は使わない</em></div>
+<div class="r sel pp" style="--i:4"><span class="fo"></span>webapp-testing<em>✔ 使う</em></div>
+<div class="r d rv" style="--i:5"><span class="fo"></span>ほかのフォルダー<em>今回は使わない</em></div>
+</div>
+<p style="margin-top:10px;font-size:.74rem;color:#5B6580">※ 図解用のイメージ。実際の並びや名前は版によって異なります。</p>
+</div>
+</div>
+<div class="st">
+<span class="badge">2</span>
+<h3>使う7フォルダーだけ見つける</h3>
+<p>展開したフォルダーの中で、目当てのSkillフォルダーを探します。ここでは確認するだけ。7つ以外は無視してOKです。</p>
+<div class="tip">AとBのZIPは別々に展開されます。どちらから来たフォルダーかを、頭の中で区別しておくと迷いません。</div>
+<p style="margin-top:14px"><button class="rp" data-replay="#m2">もう一度見る</button></p>
+</div>
+</div>
+<div class="step">
+<div class="st">
+<span class="badge">3</span>
+<h3>SKILL.md を読んで中身を確認</h3>
+<p>コピーの前に、SKILL.mdと付属ファイルをざっと読みます。Stars数や公式配布だけでは、安全は保証されません。</p>
+<div class="chk">
+<label><input type="checkbox"/>勝手に外部へデータを送る処理がないか</label>
+<label><input type="checkbox"/>ファイルを書き換える処理が紛れていないか</label>
+<label><input type="checkbox"/>追加ダウンロードを呼ぶ処理がないか</label>
+<label><input type="checkbox"/>パスワードなど認証情報の扱いはどうか</label>
+</div>
+</div>
+<div>
+<div class="skmd">
+<div class="scan"></div>
+<div class="l"><span>1</span><span>---</span></div>
+<div class="l"><span>2</span><span>name: frontend-design</span></div>
+<div class="l"><span>3</span><span>description: Webの画面を作るときの…</span></div>
+<div class="l"><span>4</span><span>---</span></div>
+<div class="l"><span>5</span><span>(ここから進め方の説明)</span></div>
+<div class="l"><span>6</span><span class="flag">curl https://example.com/setup.sh | sh</span></div>
+</div>
+<p style="font-size:.8rem;color:var(--ink2);margin-top:8px">赤い枠の行は説明用の架空の例。このような「外から取ってきて実行」する処理は、中身を理解してから進めましょう。</p>
+</div>
+</div>
+</div>
+</section><section id="install">
+<div class="wrap">
+<p class="kick">▼ STEP 3・4</p>
+<h2>Claudeに渡す。置き場所は、これだけ</h2>
+<p class="lead">決まった名前のフォルダーに、Skillフォルダーをそのままコピー。置き場所は「どこで使いたいか」で選びます。</p>
+<div aria-label="保存先" class="tabs" role="tablist">
+<button aria-selected="true" class="tab" data-p="proj" role="tab">プロジェクト用（おすすめ）</button>
+<button aria-selected="false" class="tab" data-p="mac" role="tab">個人用 Mac・Linux・WSL</button>
+<button aria-selected="false" class="tab" data-p="win" role="tab">個人用 Windows</button>
+</div>
+<div class="pathbox">
+<div class="ptree" id="ptree"></div>
+<div class="pexp">
+<h4 id="pttl"></h4>
+<p id="ptxt"></p>
+<div class="full" id="pfull"></div>
+<p style="font-size:.86rem">最初の試用は、専用の作業フォルダーに限定するプロジェクト用が管理しやすいです。複数の仕事で共通で使いたくなったら、個人用を検討しましょう。</p>
+</div>
+</div>
+<h3 style="margin-top:56px">7フォルダーの行き先</h3>
+<p class="lead" style="font-size:.95rem">同じ名前のまま、フォルダー丸ごとコピー。SKILL.mdだけの取り出しはNGです。</p>
+<div class="copydiag" data-anim="" id="cd">
+<div class="cd"><span class="ab B">B</span><span>skills/product-marketing</span><span class="ar"></span><span class="to">&lt;保存先&gt;/product-marketing</span></div>
+<div class="cd"><span class="ab B">B</span><span>skills/content-strategy</span><span class="ar"></span><span class="to">&lt;保存先&gt;/content-strategy</span></div>
+<div class="cd"><span class="ab B">B</span><span>skills/copywriting</span><span class="ar"></span><span class="to">&lt;保存先&gt;/copywriting</span></div>
+<div class="cd"><span class="ab B">B</span><span>skills/social</span><span class="ar"></span><span class="to">&lt;保存先&gt;/social</span></div>
+<div class="cd"><span class="ab">A</span><span>skills/frontend-design</span><span class="ar"></span><span class="to">&lt;保存先&gt;/frontend-design</span></div>
+<div class="cd"><span class="ab">A</span><span>skills/webapp-testing</span><span class="ar"></span><span class="to">&lt;保存先&gt;/webapp-testing</span></div>
+<div class="cd"><span class="ab">A</span><span>skills/skill-creator</span><span class="ar"></span><span class="to">&lt;保存先&gt;/skill-creator</span></div>
+</div>
+<div class="okng">
+<div class="on g"><div class="m">◎ 正しい形</div>1階層だけ。<code>skills/frontend-design/SKILL.md</code>付属ファイルも一緒に。</div>
+<div class="on x"><div class="m">× フォルダーが二重</div><code>skills/frontend-design/frontend-design/SKILL.md</code>これだと認識されません。</div>
+<div class="on x"><div class="m">× SKILL.mdだけ</div><code>skills/SKILL.md</code>付属ファイルが欠けます。フォルダーごとコピーを。</div>
+</div>
+<div class="tip">同名のフォルダーが既にあるときは、上書きせず出所と差分を確認。ライセンスのファイル（LICENSE.txtなど）は、必ず一緒に残します。</div>
+<div class="step" style="margin-top:70px">
+<div class="st">
+<span class="badge">4</span>
+<h3>認識されたか、確認する</h3>
+<p>対象のプロジェクトでClaude Codeを開き、<code class="ic">/skills</code> と入力。7つの名前が並べば成功です。または「使えるSkillsを一覧にして」と頼んでもOK。</p>
+<div class="tip">最初の動作確認は、ダミー情報と短い出力で。認識の確認と、実作業がうまくいくかの確認は別物です。</div>
+<p style="margin-top:14px"><button class="rp" data-replay="#m4">もう一度見る</button></p>
+</div>
+<div class="term" data-anim="" id="m4">
+<div class="bar"><i></i><i></i><i></i><span>my-project</span></div>
+<div class="body">
+<div><span class="dim">$</span> <span class="type" style="--n:6;--d0:.3s">claude</span></div>
+<div><span class="gd">&gt;</span> <span class="type" style="--n:7;--d0:1.6s">/skills</span></div>
+<div class="ln" style="--i:0;--d0:2.8s"><span class="dim">プロジェクトのSkills</span></div>
+<div class="ln" style="--i:1;--d0:2.8s"><span class="ok">✔</span> product-marketing</div>
+<div class="ln" style="--i:2;--d0:2.8s"><span class="ok">✔</span> content-strategy</div>
+<div class="ln" style="--i:3;--d0:2.8s"><span class="ok">✔</span> copywriting</div>
+<div class="ln" style="--i:4;--d0:2.8s"><span class="ok">✔</span> social</div>
+<div class="ln" style="--i:5;--d0:2.8s"><span class="ok">✔</span> frontend-design</div>
+<div class="ln" style="--i:6;--d0:2.8s"><span class="ok">✔</span> webapp-testing</div>
+<div class="ln caret" style="--i:7;--d0:2.8s"><span class="ok">✔</span> skill-creator</div>
+</div>
+</div>
+</div>
+<h3 style="margin-top:56px">出てこないときの確認順</h3>
+<div class="trouble" data-anim="" id="tr">
+<div class="tr start">7つの名前が出てこない</div>
+<div class="tr"><span class="nn">1</span>新しくフォルダーを作ったなら <code class="ic">/reload-skills</code></div>
+<div class="tr"><span class="nn">2</span>反応がなければ、Claude Codeを再起動</div>
+<div class="tr"><span class="nn">3</span>最終形が <code class="ic">&lt;保存先&gt;/&lt;Skill名&gt;/SKILL.md</code> か確認</div>
+<div class="tr"><span class="nn">4</span>同名の重複を確認（個人用がプロジェクト用より優先）</div>
+</div>
+<div class="note">
+<h4>Codexで使いたいときは</h4>
+<p>この資料で確認できたのは、Claude Codeへの導入手順まで。Codexの保存先は含まれていません。置き場所は版によって変わる可能性があるため、OpenAI公式の最新ドキュメントで保存先を確かめてから進めましょう。フォルダーごとコピーするという考え方は、共通です。</p>
+</div>
+</div>
+</section>
+</main>
+<main class="route" data-route="/skills" data-title="7つのSkill" hidden>
+
+<div class="phero"><div class="wrap">
+  <p class="crumb"><a href="#/">ホーム</a> / 7つのSkill</p>
+  <p class="kick">▼ 7つのSkill</p>
+  <h1 class="ptitle">7つのSkillで、できること</h1>
+  <p class="lead">商品を整理して、企画して、文章にして、画面にして、確認して、SNSに広げる。仕事の流れ順に並べています。各Skillのページには、具体的な指示の例と出力イメージ、よくある質問があります。</p>
+</div></div>
+<section id="flow-s"><div class="wrap">
+  <h2>仕事の流れで見る</h2>
+<div aria-label="おすすめの使用順" class="pipe" id="pipe">
+<div class="pn B"><div class="c">1</div><div><b>product-marketing</b><small>商品を整理</small></div></div><div class="pc"></div>
+<div class="pn B"><div class="c">2</div><div><b>content-strategy</b><small>発信を企画</small></div></div><div class="pc"></div>
+<div class="pn B"><div class="c">3</div><div><b>copywriting</b><small>販売文を作成</small></div></div><div class="pc"></div>
+<div class="pn"><div class="c">4</div><div><b>frontend-design</b><small>画面にする</small></div></div><div class="pc"></div>
+<div class="pn"><div class="c">5</div><div><b>webapp-testing</b><small>動作を確認</small></div></div><div class="pc"></div>
+<div class="pn B"><div class="c">6</div><div><b>social</b><small>SNSへ展開</small></div></div><div class="pc"></div>
+<div class="pn late"><div class="c">7</div><div><b>skill-creator</b><small>自分専用に</small></div></div>
+</div><div class="legend"><span><i style="background:var(--gold)"></i>B Marketing Skills</span><span><i style="background:var(--navy);border:1px solid var(--line)"></i>A Anthropic公式</span></div>
+</div></section>
+<section id="list"><div class="wrap">
+  <h2>Skillを選んで、詳しく読む</h2>
+  <div class="skl"><a href="#/skills/product-marketing"><span class="nb B">1</span><div><b>product-marketing</b><span class="d">商品・顧客・強みを、共通の資料にまとめる</span></div><span class="go2">詳しく見る</span></a><a href="#/skills/content-strategy"><span class="nb B">2</span><div><b>content-strategy</b><span class="d">記事の柱とテーマの優先順位を決める</span></div><span class="go2">詳しく見る</span></a><a href="#/skills/copywriting"><span class="nb B">3</span><div><b>copywriting</b><span class="d">LPや商品紹介の文章を、一貫した流れで下書きする</span></div><span class="go2">詳しく見る</span></a><a href="#/skills/social"><span class="nb B">4</span><div><b>social</b><span class="d">1本の素材を、媒体ごとの投稿に展開する</span></div><span class="go2">詳しく見る</span></a><a href="#/skills/frontend-design"><span class="nb ">5</span><div><b>frontend-design</b><span class="d">文章を、スマホでも読みやすい画面に作る</span></div><span class="go2">詳しく見る</span></a><a href="#/skills/webapp-testing"><span class="nb ">6</span><div><b>webapp-testing</b><span class="d">作ったページを、自動で操作して動作確認する</span></div><span class="go2">詳しく見る</span></a><a href="#/skills/skill-creator"><span class="nb ">7</span><div><b>skill-creator</b><span class="d">繰り返す仕事を、自分専用のSkillにする</span></div><span class="go2">詳しく見る</span></a></div>
+</div></section>
+<section id="choose"><div class="wrap">
+  <h2>やりたいことから探す</h2>
+  <p class="lead">どのSkillを使えばいいか迷ったら、この表から。</p>
+
+<table class="ctab">
+<thead><tr><th>やりたいこと</th><th>使うSkill</th></tr></thead>
+<tbody>
+<tr><td>商品や顧客の情報を整理して、共通の土台を作りたい</td><td><a href="#/skills/product-marketing">product-marketing</a></td></tr>
+<tr><td>何を書くかの計画や、記事の柱を決めたい</td><td><a href="#/skills/content-strategy">content-strategy</a></td></tr>
+<tr><td>LPや商品紹介、料金ページの文章を書きたい</td><td><a href="#/skills/copywriting">copywriting</a></td></tr>
+<tr><td>記事や動画を、SNSの投稿に展開したい</td><td><a href="#/skills/social">social</a></td></tr>
+<tr><td>文章を、Webの画面（LPなど）にしたい</td><td><a href="#/skills/frontend-design">frontend-design</a></td></tr>
+<tr><td>作ったページの表示や動作を確認したい</td><td><a href="#/skills/webapp-testing">webapp-testing</a></td></tr>
+<tr><td>繰り返す作業を、自分専用のSkillにしたい</td><td><a href="#/skills/skill-creator">skill-creator</a></td></tr>
+</tbody></table>
+
+</div></section>
+<section id="call"><div class="wrap">
+  <h2>使い方の基本</h2>
+
+<div class="two" style="margin-top:26px">
+  <div>
+    <h3>呼び出し方は、スラッシュ＋名前</h3>
+    <p>使いたいSkillの名前の前に「/」をつけて、そのあとに普通の言葉で依頼を書きます。</p>
+    <div class="codebox">/copywriting この講座情報から販売ページの下書きを作って</div>
+    <p>名前を思い出せないときは、<code class="ic">/skills</code> で一覧を確認。「使えるSkillsを一覧にして」と頼む方法もあります。</p>
+  </div>
+  <div>
+    <h3>前の出力を、次のSkillが読む</h3>
+    <p>4つのマーケ系Skillは、共通の商品資料を参照できます。上の流れ図の順に使うと、前の成果を次の工程に渡しやすくなります。</p>
+    <p>例えば、商品資料を作ったあとで「商品資料をもとに、4週間分の発信計画を作って」と頼めば、毎回の説明は不要です。</p>
+  </div>
+</div>
+
+</div></section>
+
+</main>
+<main class="route" data-route="/skills/content-strategy" data-title="content-strategy" hidden>
+
+<div class="phero"><div class="wrap"><div class="grid">
+  <div>
+    <p class="crumb"><a href="#/">ホーム</a> / <a href="#/skills">7つのSkill</a> / content-strategy</p>
+    <p class="kick">▼ Skill 2 / 7</p>
+    <h1 class="skname">content-strategy</h1>
+    <p class="skline">何を書くか、誰に届けるか、何から書くか</p>
+    <div class="tagrow"><span class="tg2 B">B　Marketing Skills</span><span class="tg2 line">MIT</span><span class="tg2 line">追加の準備なし（数字を扱うときは実データが必要）</span></div>
+    <div class="chips"><a href="#overview">概要</a><a href="#scenes">使う場面</a><a href="#prep">準備</a><a href="#steps">使い方</a><a href="#examples">具体例</a><a href="#tips">頼み方のコツ</a><a href="#can">できること</a><a href="#faq">よくある質問</a><a href="#info">導入情報</a></div>
+  </div>
+  <div class="vis" data-anim="">
+<button class="rp" data-replay="parent">もう一度</button>
+<div class="cal">
+<div class="w"><b>1週目</b><span class="ch pp" style="--i:0">初心者の疑問</span><span class="ch pp" style="--i:1">よくある失敗</span></div>
+<div class="w"><b>2週目</b><span class="ch pp" style="--i:2">基本のやり方</span><span class="ch pp" style="--i:3">事例の紹介</span></div>
+<div class="w"><b>3週目</b><span class="ch g pp" style="--i:4">無料配布資料</span><span class="ch pp" style="--i:5">使い方解説</span></div>
+<div class="w"><b>4週目</b><span class="ch g pp" style="--i:6">講座のご案内</span></div>
+</div>
+<div class="th"><span>入口は疑問から</span><span>出口は講座案内</span></div>
+</div>
+</div></div></div>
+<section id="overview"><div class="wrap"><p class="kick">▼ 概要</p><h2>このSkillでできること</h2><div class="sum"><p>ブログ、ニュースレター、無料配布コンテンツ。発信を始めると、すぐにぶつかるのが「次は何を書こう」という悩みです。content-strategyは、記事の柱、関連テーマ、優先順位、再利用の方針を整理するSkillです。</p><p>企画の段階で使うので、書く作業そのものの前に出番があります。product-marketingで作った商品資料と組み合わせると、商品へつながる発信テーマが見えやすくなります。</p><p>検索数や競合の実績といった数字は、実データがあって初めて意味を持ちます。このSkillは企画の骨組みを作る係。数字は人が用意する、と覚えておくと使い分けやすいです。</p></div></div></section><section id="scenes"><div class="wrap"><p class="kick">▼ 使う場面</p><h2>こんなときに頼れます</h2><div class="scn"><div><h4>ネタ切れで手が止まったとき</h4><p>テーマの柱を先に決めておけば、毎回ゼロから考えずに済みます。</p></div><div><h4>4週間分をまとめて決めたいとき</h4><p>週ごとの狙いを決めて、発信を1本の流れにします。</p></div><div><h4>無料配布から講座案内へつなげたいとき</h4><p>疑問への回答、無料資料、案内という順番を設計します。</p></div><div><h4>1本の記事をほかでも使い回したいとき</h4><p>再利用の方針も企画に含めておくと、あとのSNS展開がスムーズです。</p></div></div></div></section><section id="prep"><div class="wrap"><p class="kick">▼ 使う前の準備</p><h2>用意しておくと、仕上がりが変わります</h2><div class="prep"><div class="chk" style="margin-top:0"><label><input type="checkbox">商品資料（product-marketingの出力）</label><label><input type="checkbox">発信する媒体と、無理のない頻度</label><label><input type="checkbox">すでに書いた記事の一覧（あれば）</label><label><input type="checkbox">ゴール（無料配布の登録、講座の案内など）</label><label><input type="checkbox">検索数や競合の実データ（数字を扱う場合のみ）</label></div><div class="tip" style="margin-top:0">商品資料がなくても使えます。その場合は、商品と読者の情報を指示に書き添えましょう。</div></div></div></section><section id="steps"><div class="wrap"><p class="kick">▼ 使い方</p><h2>4つのステップで進める</h2><div class="flow" id="fl2" data-anim><div class="fs" style="--i:0"><div class="n">1</div><h4>商品資料を前提にする</h4><p>「商品資料をもとに」と添えるだけで、商品に沿った企画になります。</p><span class="bar"></span></div><div class="fs" style="--i:1"><div class="n">2</div><h4>期間と媒体を伝える</h4><p>例えば4週間、ブログとThreadsなど。頻度は続けられる範囲で。</p><span class="bar"></span></div><div class="fs" style="--i:2"><div class="n">3</div><h4>柱とテーマ案を受け取る</h4><p>柱を先に決め、その下にテーマを並べてもらいます。</p><span class="bar"></span></div><div class="fs" style="--i:3"><div class="n">4</div><h4>優先順位を自分で決める</h4><p>全部は書けません。最初の数本を選び、残りは後回しの棚へ。</p><span class="bar"></span></div></div></div></section><section id="examples"><div class="wrap"><p class="kick">▼ 具体例</p><h2>こう頼むと、こう返ってきます</h2><p class="lead">場面ごとの指示と、出力のイメージです。出力はすべて、説明用に作った架空の例。実際の結果は、渡す材料によって変わります。</p>
+<div class="exm" id="ex-a">
+  <div class="exm-h"><span class="exl">具体例 A</span><h3>4週間の発信計画を作る</h3></div>
+  <p class="sit">毎週のテーマを決めて、無料配布から講座案内へ自然につなげたい。</p>
+  <div class="exm-g">
+    <div><h4>▼ Claudeへの指示</h4><div class="prompt"><p>/content-strategy 商品資料をもとに、4週間分の発信計画を作って。初心者の疑問から無料配布資料、講座案内へ自然につながる構成で</p><button class="cp">コピー</button></div><div class="pt">ゴール（ここでは講座案内）を書いておくと、週ごとの役割が決まります。</div></div>
+    <div><h4>▼ 発信計画の出力イメージ（架空の例）</h4><div class="out"><table><thead><tr><th>週</th><th>狙い</th><th>テーマ例</th></tr></thead><tbody><tr><td>1</td><td>疑問に答える</td><td>AIを使う前のよくある不安 / 最初の失敗あるある</td></tr><tr><td>2</td><td>基本を知る</td><td>最初に頼むことの決め方 / 身近な活用事例</td></tr><tr><td>3</td><td>無料資料へ誘う</td><td>ミニガイドの紹介 / 使い方の解説</td></tr><tr><td>4</td><td>講座を案内する</td><td>講座の内容と、向いている人</td></tr></tbody></table></div></div>
+  </div>
+</div>
+<div class="exm" id="ex-b">
+  <div class="exm-h"><span class="exl">具体例 B</span><h3>発信の柱を絞る</h3></div>
+  <p class="sit">あれもこれも書きたくて、軸が定まらない。</p>
+  <div class="exm-g">
+    <div><h4>▼ Claudeへの指示</h4><div class="prompt"><p>/content-strategy 商品資料をもとに、発信の柱を3〜5個に絞って提案して。それぞれの柱で、どんな読者のどんな疑問に答えるかも添えて</p><button class="cp">コピー</button></div><div class="pt">数に幅（3〜5個）を持たせると、無理に埋めたり削ったりしない案が返ってきます。</div></div>
+    <div><h4>▼ 柱の提案イメージ（架空の例）</h4><div class="out"><div class="orow"><b>柱1</b><span>はじめの一歩。初心者がつまずく入口の疑問に答える。</span></div><div class="orow"><b>柱2</b><span>時短の実例。毎日の作業が軽くなる具体的な場面を見せる。</span></div><div class="orow"><b>柱3</b><span>選び方と考え方。道具や進め方で迷う人の判断材料を渡す。</span></div><div class="orow"><b>柱4</b><span>よくある失敗。つまずきの先回りで安心感をつくる。</span></div></div></div>
+  </div>
+</div>
+<div class="exm" id="ex-c">
+  <div class="exm-h"><span class="exl">具体例 C</span><h3>1本の記事から関連テーマを広げる</h3></div>
+  <p class="sit">反応のよかった記事がある。次に何を書けばいいか知りたい。</p>
+  <div class="exm-g">
+    <div><h4>▼ Claudeへの指示</h4><div class="prompt"><p>/content-strategy 『AIで議事録を作る方法』という記事を軸に、関連して書くとよいテーマを10個挙げて。初心者が次に知りたくなる順に並べて</p><button class="cp">コピー</button></div><div class="pt">「読む人が次に知りたくなる順」と頼むと、記事同士のつながりを意識した並びになります。</div></div>
+    <div><h4>▼ 関連テーマの出力イメージ（架空の例）</h4><div class="out"><ul><li>議事録にAIを使うときの、情報の扱い方</li><li>うまく要約されないときの直し方</li><li>会議の前に準備しておく3つのこと</li><li>議事録から次の行動を取り出すコツ</li><li>…（全10個）</li></ul></div></div>
+  </div>
+</div>
+<div class="exm" id="ex-d">
+  <div class="exm-h"><span class="exl">具体例 D</span><h3>無料配布の企画を作る</h3></div>
+  <p class="sit">メルマガ登録につながる、無料のミニガイドを作りたい。</p>
+  <div class="exm-g">
+    <div><h4>▼ Claudeへの指示</h4><div class="prompt"><p>/content-strategy 無料配布のミニガイドを作りたい。商品資料をもとに、テーマ案を5つと、それぞれから講座案内へつなぐ導線を提案して</p><button class="cp">コピー</button></div><div class="pt">入口（無料配布）と出口（講座案内）を同時に頼むと、途切れない導線になります。</div></div>
+    <div><h4>▼ 企画案の出力イメージ（架空の例）</h4><div class="out"><table><thead><tr><th>テーマ案</th><th>講座案内へのつなぎ方</th></tr></thead><tbody><tr><td>はじめてのAI、最初の3つの頼み方</td><td>もっと練習したい人へ、講座の練習パートを案内</td></tr><tr><td>毎日の作業を洗い出すシート</td><td>洗い出した作業を講座のテンプレートで解決する流れを紹介</td></tr><tr><td>…（全5案）</td><td>…</td></tr></tbody></table></div></div>
+  </div>
+</div></div></section><section id="tips"><div class="wrap"><p class="kick">▼ 頼み方のコツ</p><h2>ひと工夫で、返ってくる質が変わる</h2><div class="vsrow"><div class="vsb bad"><span class="vl">✘ ありがちな頼み方</span><p>ブログのネタを出して</p></div><div class="vsb good"><span class="vl">✔ おすすめの頼み方</span><p>商品資料をもとに、4週間分の発信計画を作って。初心者の疑問から無料配布資料、講座案内へ自然につながる構成で</p><button class="cp">コピー</button></div><p class="vsp">期間、読者、ゴールが入ると、使える企画になります。</p></div><div class="vsrow"><div class="vsb bad"><span class="vl">✘ ありがちな頼み方</span><p>検索で上位を取れるテーマを教えて</p></div><div class="vsb good"><span class="vl">✔ おすすめの頼み方</span><p>手元の検索数データを貼るので、その数字をもとに優先順位を提案して</p><button class="cp">コピー</button></div><p class="vsp">数字を持たないまま数字を求めると、もっともらしい推測が混ざります。実データを渡しましょう。</p></div></div></section><section id="can"><div class="wrap"><p class="kick">▼ できること、できないこと</p><h2>得意なこと、任せられないこと</h2><div class="cc"><div class="yes"><h4>得意なこと</h4><ul><li>柱、関連テーマ、優先順位の整理</li><li>期間ごとの発信計画づくり</li><li>素材を再利用する方針の設計</li></ul></div><div class="no"><h4>任せられないこと</h4><ul><li>実際の検索数や競合の実績を出すこと（実データか調査手段が別に必要）</li><li>記事の公開や予約</li><li>成果の保証</li></ul></div></div></div></section><section id="faq"><div class="wrap"><p class="kick">▼ よくある質問</p><h2>つまずきやすいところ</h2><div class="faq"><details><summary>product-marketingなしでも使えますか？</summary><p>使えます。ただし商品や読者の情報を指示に書く必要が出ます。商品資料があるほうが話が早く進みます。</p></details><details><summary>何週間分で頼むのがいいですか？</summary><p>例では4週間分で依頼しています。慣れないうちは短めの期間のほうが、見直しやすくておすすめです。</p></details><details><summary>案が多すぎて選べません</summary><p>「最初に書く3本だけに絞って」と頼み直します。選んだ理由まで添えてもらうと判断しやすくなります。</p></details></div></div></section><section id="info"><div class="wrap"><p class="kick">▼ 導入情報</p><h2>導入するときに確認すること</h2><dl class="metat"><dt>導入元</dt><dd>B　skills/content-strategy</dd><dt>コピー先</dt><dd>&lt;保存先&gt;/content-strategy</dd><dt>確認するファイル</dt><dd>&lt;保存先&gt;/content-strategy/SKILL.md</dd><dt>依存関係</dt><dd>企画作成なら追加ランタイム不要。検索数や競合実績を扱う場合は、実データか調査手段が別途必要</dd><dt>ライセンス</dt><dd>MIT</dd><dt>確認したSKILL.md</dt><dd><a href="https://github.com/coreyhaines31/marketingskills/blob/dda3841f0b294e01e93b1541486beefbfab0915e/skills/content-strategy/SKILL.md" target="_blank" rel="noopener">GitHubで開く</a>（確認時のコミットに固定したページ）</dd></dl><div class="warn" style="margin-top:22px"><b>注意</b>　検索数や競合の実績を扱うときは、実データか調査手段を別に用意すること。</div></div></section><div class="wrap"><div class="pager"><a class="pg" href="#/skills/product-marketing"><small>前のSkill</small><b>1　product-marketing</b><span>商品・顧客・強みを、共通の資料にまとめる</span></a><a class="pg next" href="#/skills/copywriting"><small>次のSkill</small><b>3　copywriting</b><span>LPや商品紹介の文章を、一貫した流れで下書きする</span></a></div></div>
+</main>
+<main class="route" data-route="/skills/copywriting" data-title="copywriting" hidden>
+
+<div class="phero"><div class="wrap"><div class="grid">
+  <div>
+    <p class="crumb"><a href="#/">ホーム</a> / <a href="#/skills">7つのSkill</a> / copywriting</p>
+    <p class="kick">▼ Skill 3 / 7</p>
+    <h1 class="skname">copywriting</h1>
+    <p class="skline">申し込みまで一本道でつながる、販売ページの原稿</p>
+    <div class="tagrow"><span class="tg2 B">B　Marketing Skills</span><span class="tg2 line">MIT</span><span class="tg2 line">追加の準備なし（実績・価格は確認済みの情報を渡す）</span></div>
+    <div class="chips"><a href="#overview">概要</a><a href="#scenes">使う場面</a><a href="#prep">準備</a><a href="#steps">使い方</a><a href="#examples">具体例</a><a href="#tips">頼み方のコツ</a><a href="#can">できること</a><a href="#faq">よくある質問</a><a href="#info">導入情報</a></div>
+  </div>
+  <div class="vis" data-anim="">
+<button class="rp" data-replay="parent">もう一度</button>
+<div class="lp">
+<span class="an" style="--i:0;top:14px">見出し</span>
+<div class="hh" style="--i:0;--w:82%"></div><div class="hh" style="--i:1;--w:58%;height:10px;background:#7B89AD"></div>
+<span class="an" style="--i:1;top:78px">価値の説明</span>
+<div class="v"><div></div><div></div><div></div></div>
+<span class="an" style="--i:2;top:132px">申し込みボタン</span>
+<span class="cta">講座に申し込む</span>
+</div>
+</div>
+</div></div></div>
+<section id="overview"><div class="wrap"><p class="kick">▼ 概要</p><h2>このSkillでできること</h2><div class="sum"><p>LP、商品紹介、料金ページなど、売るための文章を組み立てるSkillです。見出し、価値の説明、申し込みボタンの文言までを、一貫した流れで下書きできます。</p><p>文章の部品がバラバラだと、読み手は途中で迷います。見出しで約束したことを本文で説明し、ボタンで行動につなげる。この一本道を整えるのが得意分野。</p><p>ただし、売上や受講後の成果を保証する機能ではありません。実績、体験談、価格は、人が確認した事実だけを渡す。下書きの精度は、渡す材料の確かさで決まります。</p></div></div></section><section id="scenes"><div class="wrap"><p class="kick">▼ 使う場面</p><h2>こんなときに頼れます</h2><div class="scn"><div><h4>講座のLPを作るとき</h4><p>ファーストビューから申し込みまで、ページ全体の流れを一気に下書きします。</p></div><div><h4>商品紹介ページを書くとき</h4><p>使う場面が思い浮かぶ文章に整えます。</p></div><div><h4>料金ページで迷いを減らしたいとき</h4><p>含まれるもの、含まれないものを整理して、読み手の疑問に先回りします。</p></div><div><h4>手元の文章を見直したいとき</h4><p>既存の文章を貼って、流れや言い回しの改善を頼む使い方もできます。</p></div></div></div></section><section id="prep"><div class="wrap"><p class="kick">▼ 使う前の準備</p><h2>用意しておくと、仕上がりが変わります</h2><div class="prep"><div class="chk" style="margin-top:0"><label><input type="checkbox">商品資料（product-marketingの出力）</label><label><input type="checkbox">確認済みの価格、提供内容、申し込み方法</label><label><input type="checkbox">裏づけのある実績や体験談（なければ「なし」と伝える）</label><label><input type="checkbox">読者が使っている悩みの言い回し</label><label><input type="checkbox">避けたい表現（誇張、断定、不安をあおる言い方）</label></div><div class="tip" style="margin-top:0">価格が未定なら「●●円」のまま依頼して、あとで入れる進め方でも大丈夫です。</div></div></div></section><section id="steps"><div class="wrap"><p class="kick">▼ 使い方</p><h2>4つのステップで進める</h2><div class="flow" id="fl3" data-anim><div class="fs" style="--i:0"><div class="n">1</div><h4>材料を渡す</h4><p>商品資料と、確認済みの事実を渡します。ない情報は「ない」と伝えるのがポイント。</p><span class="bar"></span></div><div class="fs" style="--i:1"><div class="n">2</div><h4>構成を先に見る</h4><p>いきなり全文ではなく、見出しの流れから確認すると、直しやすくなります。</p><span class="bar"></span></div><div class="fs" style="--i:2"><div class="n">3</div><h4>下書きを受け取る</h4><p>見出し、本文、ボタンの文言まで、ひとまとまりで受け取ります。</p><span class="bar"></span></div><div class="fs" style="--i:3"><div class="n">4</div><h4>事実を確認して自分の言葉に</h4><p>数字、実績、約束の強さを人が確認。口調も自分らしく整えます。</p><span class="bar"></span></div></div></div></section><section id="examples"><div class="wrap"><p class="kick">▼ 具体例</p><h2>こう頼むと、こう返ってきます</h2><p class="lead">場面ごとの指示と、出力のイメージです。出力はすべて、説明用に作った架空の例。実際の結果は、渡す材料によって変わります。</p>
+<div class="exm" id="ex-a">
+  <div class="exm-h"><span class="exl">具体例 A</span><h3>講座の販売ページを下書きする</h3></div>
+  <p class="sit">講座のLPをゼロから作る。まずは原稿の骨組みが欲しい。</p>
+  <div class="exm-g">
+    <div><h4>▼ Claudeへの指示</h4><div class="prompt"><p>/copywriting この講座情報から販売ページの下書きを作って。誇張を避け、対象者、学べること、含まれるもの、申し込み導線を明確にして</p><button class="cp">コピー</button></div><div class="pt">「誇張を避け」を入れておくと、強い断定や過剰な約束が減ります。</div></div>
+    <div><h4>▼ LP構成の出力イメージ（架空の例）</h4><div class="out"><div class="orow"><b>見出し</b><span>毎日の「面倒」を、AIと一緒に軽くしていく入門講座</span></div><div class="orow"><b>悩みへの共感</b><span>何から始めればいいか分からない。そんな声に向けて作りました。</span></div><div class="orow"><b>学べること</b><span>最初の頼み方、日常業務での使い方、続け方</span></div><div class="orow"><b>含まれるもの</b><span>動画レッスン、テンプレート集、質問できる場</span></div><div class="orow"><b>ボタン</b><span>講座の詳細を見る</span></div></div></div>
+  </div>
+</div>
+<div class="exm" id="ex-b">
+  <div class="exm-h"><span class="exl">具体例 B</span><h3>料金ページを作る</h3></div>
+  <p class="sit">価格はまだ確定していない。迷いそうな点を先に整理したい。</p>
+  <div class="exm-g">
+    <div><h4>▼ Claudeへの指示</h4><div class="prompt"><p>/copywriting 料金ページの下書きを作って。含まれるものと含まれないものを分けて、迷いそうな点への説明も入れて。価格は後で入れるので「●●円」のままで</p><button class="cp">コピー</button></div><div class="pt">未確定の情報は仮置きにすると、AIが数字を作ってしまう事故を防げます。</div></div>
+    <div><h4>▼ 料金ページの出力イメージ（架空の例）</h4><div class="out"><div class="orow"><b>価格</b><span>●●円（確定後に記入）</span></div><div class="orow"><b>含まれるもの</b><span>動画レッスン、テンプレート集、質問できる場</span></div><div class="orow"><b>含まれないもの</b><span>個別の添削、個別コンサルティング</span></div><div class="orow"><b>迷いやすい点</b><span>初心者でもついていけますか？ 支払い方法は？ といった疑問に、短く回答</span></div></div></div>
+  </div>
+</div>
+<div class="exm" id="ex-c">
+  <div class="exm-h"><span class="exl">具体例 C</span><h3>商品紹介文を短く書く</h3></div>
+  <p class="sit">テンプレート商品の紹介文を、商品ページの冒頭に置きたい。</p>
+  <div class="exm-g">
+    <div><h4>▼ Claudeへの指示</h4><div class="prompt"><p>/copywriting テンプレート商品の紹介文を300字程度で。使う場面が思い浮かぶように。成果の約束はしないで</p><button class="cp">コピー</button></div><div class="pt">文字数と禁止事項を両方書くと、長さも安全面も整います。</div></div>
+    <div><h4>▼ 紹介文の出力イメージ（架空の例）</h4><div class="out"><p>毎週のSNS、何を投稿するか迷う時間をなくすためのカレンダーです。1か月分の投稿枠と記入例がそろっているので、月曜の朝に開いて、空欄を埋めるところから始められます。（以下略）</p></div></div>
+  </div>
+</div>
+<div class="exm" id="ex-d">
+  <div class="exm-h"><span class="exl">具体例 D</span><h3>ボタンの文言を考える</h3></div>
+  <p class="sit">申し込みボタンを押す前の不安を、文言でやわらげたい。</p>
+  <div class="exm-g">
+    <div><h4>▼ Claudeへの指示</h4><div class="prompt"><p>/copywriting 申し込みボタンの文言を5案出して。誇張を避け、押した後に何が起きるか分かるものにして</p><button class="cp">コピー</button></div><div class="pt">「押した後に何が起きるか」を条件にすると、読み手が安心できる文言になります。</div></div>
+    <div><h4>▼ 文言案の出力イメージ（架空の例）</h4><div class="out"><ul><li>講座の詳細を見る</li><li>無料のサンプルレッスンを見る</li><li>申し込みフォームへ進む</li><li>料金と内容を確認する</li><li>質問してから決める</li></ul></div></div>
+  </div>
+</div></div></section><section id="tips"><div class="wrap"><p class="kick">▼ 頼み方のコツ</p><h2>ひと工夫で、返ってくる質が変わる</h2><div class="vsrow"><div class="vsb bad"><span class="vl">✘ ありがちな頼み方</span><p>売れる文章を書いて</p></div><div class="vsb good"><span class="vl">✔ おすすめの頼み方</span><p>/copywriting この講座情報から販売ページの下書きを作って。誇張を避け、対象者、学べること、含まれるもの、申し込み導線を明確にして</p><button class="cp">コピー</button></div><p class="vsp">「売れる」という願いより、対象者と構成を指定したほうが、使える原稿になります。</p></div><div class="vsrow"><div class="vsb bad"><span class="vl">✘ ありがちな頼み方</span><p>実績もいい感じに入れて</p></div><div class="vsb good"><span class="vl">✔ おすすめの頼み方</span><p>実績は、私が渡した数字だけを使って。ない項目は「要確認」と書いて</p><button class="cp">コピー</button></div><p class="vsp">実績の数字や体験談を作らせない。ここは売る側の信頼に関わる部分です。</p></div></div></section><section id="can"><div class="wrap"><p class="kick">▼ できること、できないこと</p><h2>得意なこと、任せられないこと</h2><div class="cc"><div class="yes"><h4>得意なこと</h4><ul><li>見出し、価値の説明、ボタン文言の組み立て</li><li>ページ構成の提案と複数案</li><li>既存文章の流れの見直し</li></ul></div><div class="no"><h4>任せられないこと</h4><ul><li>成果や売上の保証</li><li>実績や体験談の裏づけを用意すること</li><li>公開してよいかの最終判断</li></ul></div></div></div></section><section id="faq"><div class="wrap"><p class="kick">▼ よくある質問</p><h2>つまずきやすいところ</h2><div class="faq"><details><summary>誇張が心配です</summary><p>指示に「誇張を避け」と入れておきましょう。最終的な確認は、人の目でお願いします。</p></details><details><summary>体験談も書いてもらえますか？</summary><p>作らせるのはおすすめしません。実在する方の体験談を、許可を得たうえで、そのまま渡します。</p></details><details><summary>LPの画面まで作ってくれますか？</summary><p>文章の下書きまでです。画面にする作業は、5つ目のfrontend-designの出番です。</p></details></div></div></section><section id="info"><div class="wrap"><p class="kick">▼ 導入情報</p><h2>導入するときに確認すること</h2><dl class="metat"><dt>導入元</dt><dd>B　skills/copywriting</dd><dt>コピー先</dt><dd>&lt;保存先&gt;/copywriting</dd><dt>確認するファイル</dt><dd>&lt;保存先&gt;/copywriting/SKILL.md</dd><dt>依存関係</dt><dd>下書き作成なら追加ランタイム不要。実績数値や価格は確認済み情報を渡す</dd><dt>ライセンス</dt><dd>MIT</dd><dt>確認したSKILL.md</dt><dd><a href="https://github.com/coreyhaines31/marketingskills/blob/dda3841f0b294e01e93b1541486beefbfab0915e/skills/copywriting/SKILL.md" target="_blank" rel="noopener">GitHubで開く</a>（確認時のコミットに固定したページ）</dd></dl><div class="warn" style="margin-top:22px"><b>注意</b>　売上や受講後の成果を保証する機能ではありません。実績や体験談の裏づけは人が確認し、公開前に必ずチェックを。</div></div></section><div class="wrap"><div class="pager"><a class="pg" href="#/skills/content-strategy"><small>前のSkill</small><b>2　content-strategy</b><span>記事の柱とテーマの優先順位を決める</span></a><a class="pg next" href="#/skills/social"><small>次のSkill</small><b>4　social</b><span>1本の素材を、媒体ごとの投稿に展開する</span></a></div></div>
+</main>
+<main class="route" data-route="/skills/frontend-design" data-title="frontend-design" hidden>
+
+<div class="phero"><div class="wrap"><div class="grid">
+  <div>
+    <p class="crumb"><a href="#/">ホーム</a> / <a href="#/skills">7つのSkill</a> / frontend-design</p>
+    <p class="kick">▼ Skill 5 / 7</p>
+    <h1 class="skname">frontend-design</h1>
+    <p class="skline">文章を、スマホでも読める「画面」にする</p>
+    <div class="tagrow"><span class="tg2 ">A　Anthropic公式</span><span class="tg2 line">Apache-2.0</span><span class="tg2 line">Skill自体は追加の準備なし（作るサイトによってNode.jsなどが必要）</span></div>
+    <div class="chips"><a href="#overview">概要</a><a href="#scenes">使う場面</a><a href="#prep">準備</a><a href="#steps">使い方</a><a href="#examples">具体例</a><a href="#tips">頼み方のコツ</a><a href="#can">できること</a><a href="#faq">よくある質問</a><a href="#info">導入情報</a></div>
+  </div>
+  <div class="vis" data-anim="">
+<button class="rp" data-replay="parent">もう一度</button>
+<div class="phone">
+<div class="hero2"></div>
+<i style="--i:0;--w:90%"></i><i style="--i:1;--w:70%"></i><i style="--i:2;--w:82%"></i><i style="--i:3;--w:50%"></i>
+<div class="bt"></div>
+</div>
+<div class="pal"><i style="background:#14213D"></i><i style="background:#A27A28"></i><i style="background:#E4EAF6"></i><i style="background:#16756A"></i></div>
+<p style="text-align:center;margin-top:10px;color:#9FAACB;font-size:.78rem">配色、文字、余白を整えて、スマホでも読みやすく。</p>
+</div>
+</div></div></div>
+<section id="overview"><div class="wrap"><p class="kick">▼ 概要</p><h2>このSkillでできること</h2><div class="sum"><p>配色、文字、余白、構成を考えながら、Webの画面を作るSkillです。講座LP、無料資料の紹介ページ、簡単な診断ページなど、文章を実際の画面にする場面で役に立ちます。</p><p>画像生成専用のツールではありません。主な対象は、WebのUIと、その実装（コード）。見た目の判断と、作る作業を、まとめて任せられるイメージです。</p><p>最初は、HTMLとCSSでローカル確認できる形から始めるのが安心。公開、決済、メール配信は別の設定が必要なので、依頼文で「まだ行わない」と添えておきます。</p></div></div></section><section id="scenes"><div class="wrap"><p class="kick">▼ 使う場面</p><h2>こんなときに頼れます</h2><div class="scn"><div><h4>販売文をLPにしたいとき</h4><p>copywritingで作った原稿を、そのままページの形にします。</p></div><div><h4>無料配布の紹介ページを作るとき</h4><p>資料の内容を伝えるシンプルなページを、短時間で形にできます。</p></div><div><h4>簡単な診断ページを作りたいとき</h4><p>質問に答えると結果が出る、画面の中だけで動く形から始められます。</p></div><div><h4>スマホでの見え方を整えたいとき</h4><p>文字の大きさや余白を、スマホ基準で調整してもらいます。</p></div></div></div></section><section id="prep"><div class="wrap"><p class="kick">▼ 使う前の準備</p><h2>用意しておくと、仕上がりが変わります</h2><div class="prep"><div class="chk" style="margin-top:0"><label><input type="checkbox">画面にしたい文章（copywritingの出力など）</label><label><input type="checkbox">雰囲気の希望（落ち着いた、信頼感があるなど）</label><label><input type="checkbox">必ず入れたい要素（ボタンの位置、入力欄など）</label><label><input type="checkbox">スマホ中心か、パソコン中心か</label><label><input type="checkbox">「公開や決済接続は今回しない」という方針</label></div><div class="tip" style="margin-top:0">コードが分からなくても大丈夫。できたファイルをブラウザで開いて、見た感想を言葉で伝えれば直してもらえます。</div></div></div></section><section id="steps"><div class="wrap"><p class="kick">▼ 使い方</p><h2>4つのステップで進める</h2><div class="flow" id="fl5" data-anim><div class="fs" style="--i:0"><div class="n">1</div><h4>文章と希望を渡す</h4><p>原稿と、雰囲気や必須要素をまとめて伝えます。</p><span class="bar"></span></div><div class="fs" style="--i:1"><div class="n">2</div><h4>ローカルで確認できる形で作る</h4><p>HTMLとCSSなら、できたファイルをブラウザで開くだけ。公開はまだしません。</p><span class="bar"></span></div><div class="fs" style="--i:2"><div class="n">3</div><h4>見て、言葉で直す</h4><p>「見出しを大きく」「余白を広めに」など、具体的に頼みます。</p><span class="bar"></span></div><div class="fs" style="--i:3"><div class="n">4</div><h4>webapp-testingで確認する</h4><p>表示と導線のチェックは、6つ目のSkillに任せます。</p><span class="bar"></span></div></div></div></section><section id="examples"><div class="wrap"><p class="kick">▼ 具体例</p><h2>こう頼むと、こう返ってきます</h2><p class="lead">場面ごとの指示と、出力のイメージです。出力はすべて、説明用に作った架空の例。実際の結果は、渡す材料によって変わります。</p>
+<div class="exm" id="ex-a">
+  <div class="exm-h"><span class="exl">具体例 A</span><h3>講座のLPを作る</h3></div>
+  <p class="sit">販売文ができた。スマホで読みやすい1ページにしたい。</p>
+  <div class="exm-g">
+    <div><h4>▼ Claudeへの指示</h4><div class="prompt"><p>/frontend-design この販売文で、スマホでも読みやすい1ページの講座LPを作って。最初はHTMLとCSSでローカル確認できる形に。公開や決済接続はまだ行わないで</p><button class="cp">コピー</button></div><div class="pt">「公開や決済接続はまだ行わない」を添えて、作業の範囲を限定します。</div></div>
+    <div><h4>▼ 出力イメージ（架空の例）</h4><div class="out"><div class="orow"><b>作られるもの</b><span>index.html と style.css（例）</span></div><div class="orow"><b>構成</b><span>ファーストビュー、悩みへの共感、学べること、含まれるもの、申し込みボタン</span></div><div class="orow"><b>確認方法</b><span>index.html をダブルクリックして、ブラウザで開く</span></div><div class="orow"><b>まだしないこと</b><span>公開、決済の接続、メール配信の設定</span></div></div></div>
+  </div>
+</div>
+<div class="exm" id="ex-b">
+  <div class="exm-h"><span class="exl">具体例 B</span><h3>無料資料の紹介ページを作る</h3></div>
+  <p class="sit">ミニガイドの配布ページを作りたい。メール登録の導線は見た目だけ。</p>
+  <div class="exm-g">
+    <div><h4>▼ Claudeへの指示</h4><div class="prompt"><p>/frontend-design 無料PDFガイドの紹介ページを作って。上に資料の表紙イメージ枠、中ほどに内容の説明、下にメールアドレス入力欄のデザインだけ置いて。送信の仕組みはまだ作らないで</p><button class="cp">コピー</button></div><div class="pt">「デザインだけ」「仕組みは作らない」と分けると、安全にレイアウトの確認ができます。</div></div>
+    <div><h4>▼ 出力イメージ（架空の例）</h4><div class="out"><div class="orow"><b>上部</b><span>表紙イメージの枠とタイトル</span></div><div class="orow"><b>中ほど</b><span>ガイドで分かることを短くまとめた説明</span></div><div class="orow"><b>下部</b><span>メールアドレス入力欄と登録ボタンのデザイン（送信はしない）</span></div></div></div>
+  </div>
+</div>
+<div class="exm" id="ex-c">
+  <div class="exm-h"><span class="exl">具体例 C</span><h3>簡単な診断ページを作る</h3></div>
+  <p class="sit">3つの質問に答えると、タイプ別のコメントが出るページを作りたい。</p>
+  <div class="exm-g">
+    <div><h4>▼ Claudeへの指示</h4><div class="prompt"><p>/frontend-design 3問の質問に答えると、タイプ別のコメントが出る簡単な診断ページを作って。画面の中だけで動く形で、データの保存や送信はしないで</p><button class="cp">コピー</button></div><div class="pt">回答を保存しない、と明記。個人情報を扱わない安全な試作になります。</div></div>
+    <div><h4>▼ 出力イメージ（架空の例）</h4><div class="out"><div class="orow"><b>質問</b><span>3問。選択肢を選ぶと次へ進む。</span></div><div class="orow"><b>結果</b><span>回答の組み合わせに応じて、タイプ別のコメントを表示</span></div><div class="orow"><b>保存</b><span>なし（画面の中だけで動作）</span></div></div></div>
+  </div>
+</div>
+<div class="exm" id="ex-d">
+  <div class="exm-h"><span class="exl">具体例 D</span><h3>雰囲気を変える</h3></div>
+  <p class="sit">できたページが派手すぎる。落ち着いた印象にしたい。</p>
+  <div class="exm-g">
+    <div><h4>▼ Claudeへの指示</h4><div class="prompt"><p>/frontend-design いまのLPを、もう少し落ち着いた雰囲気に。色は2色までに絞り、文字を大きめに、余白を広めにして</p><button class="cp">コピー</button></div><div class="pt">色の数、文字の大きさ、余白。変えたい要素を具体的に挙げると、狙い通りに直ります。</div></div>
+    <div><h4>▼ 変更点の出力イメージ（架空の例）</h4><div class="out"><ul><li>配色を紺と白の2色に整理</li><li>本文の文字サイズを一段階大きく</li><li>セクション間の余白を広げた</li><li>ボタンの色を1色に統一</li></ul></div></div>
+  </div>
+</div></div></section><section id="tips"><div class="wrap"><p class="kick">▼ 頼み方のコツ</p><h2>ひと工夫で、返ってくる質が変わる</h2><div class="vsrow"><div class="vsb bad"><span class="vl">✘ ありがちな頼み方</span><p>かっこいいサイトを作って</p></div><div class="vsb good"><span class="vl">✔ おすすめの頼み方</span><p>/frontend-design この販売文で、スマホでも読みやすい1ページの講座LPを作って。最初はHTMLとCSSでローカル確認できる形に。公開や決済接続はまだ行わないで</p><button class="cp">コピー</button></div><p class="vsp">用途、デバイス、範囲を伝えると、狙いに合った画面になります。</p></div><div class="vsrow"><div class="vsb bad"><span class="vl">✘ ありがちな頼み方</span><p>もっといい感じにして</p></div><div class="vsb good"><span class="vl">✔ おすすめの頼み方</span><p>見出しを大きく、ボタンを目立たせて。背景は白に近い色に</p><button class="cp">コピー</button></div><p class="vsp">直したい点を、見た目の言葉で具体的に。修正の往復が減ります。</p></div></div></section><section id="can"><div class="wrap"><p class="kick">▼ できること、できないこと</p><h2>得意なこと、任せられないこと</h2><div class="cc"><div class="yes"><h4>得意なこと</h4><ul><li>配色、文字、余白、構成の設計</li><li>HTMLとCSSでのページ制作</li><li>ローカルで確認できる形づくり</li></ul></div><div class="no"><h4>任せられないこと</h4><ul><li>画像の生成（このSkillの対象はWebのUIと実装）</li><li>ホスティング、決済、メール配信の設定（別途必要）</li><li>売上や成果の保証</li></ul></div></div></div></section><section id="faq"><div class="wrap"><p class="kick">▼ よくある質問</p><h2>つまずきやすいところ</h2><div class="faq"><details><summary>コードが分からなくても使えますか？</summary><p>使えます。できたファイルを開いて、見た印象を言葉で伝える。この繰り返しで進められます。</p></details><details><summary>必要な環境は？</summary><p>Skill自体に必須の追加ランタイムはありません。作るサイトの構成によって、Node.jsなどが必要になることがあります。</p></details><details><summary>そのまま公開できますか？</summary><p>公開、決済、メール配信は別の設定です。まずローカルで形にして、公開は慎重に別の工程で。</p></details></div></div></section><section id="info"><div class="wrap"><p class="kick">▼ 導入情報</p><h2>導入するときに確認すること</h2><dl class="metat"><dt>導入元</dt><dd>A　skills/frontend-design</dd><dt>コピー先</dt><dd>&lt;保存先&gt;/frontend-design</dd><dt>確認するファイル</dt><dd>&lt;保存先&gt;/frontend-design/SKILL.md</dd><dt>依存関係</dt><dd>Skill自体に必須の追加ランタイムはない。作るサイトの構成次第でNode.jsなどが必要</dd><dt>ライセンス</dt><dd>Apache-2.0</dd><dt>確認したSKILL.md</dt><dd><a href="https://github.com/anthropics/skills/blob/8a1541c4a3ffa5a20a5a91de0dcf3f0bab1d1ef4/skills/frontend-design/SKILL.md" target="_blank" rel="noopener">GitHubで開く</a>（確認時のコミットに固定したページ）</dd></dl><div class="warn" style="margin-top:22px"><b>注意</b>　ホスティング、決済、メール配信は別途設定が必要です。最初はローカルで見るところまでにしましょう。</div></div></section><div class="wrap"><div class="pager"><a class="pg" href="#/skills/social"><small>前のSkill</small><b>4　social</b><span>1本の素材を、媒体ごとの投稿に展開する</span></a><a class="pg next" href="#/skills/webapp-testing"><small>次のSkill</small><b>6　webapp-testing</b><span>作ったページを、自動で操作して動作確認する</span></a></div></div>
+</main>
+<main class="route" data-route="/skills/product-marketing" data-title="product-marketing" hidden>
+
+<div class="phero"><div class="wrap"><div class="grid">
+  <div>
+    <p class="crumb"><a href="#/">ホーム</a> / <a href="#/skills">7つのSkill</a> / product-marketing</p>
+    <p class="kick">▼ Skill 1 / 7</p>
+    <h1 class="skname">product-marketing</h1>
+    <p class="skline">「誰に何を売るか」を、1枚の資料にまとめる</p>
+    <div class="tagrow"><span class="tg2 B">B　Marketing Skills</span><span class="tg2 line">MIT</span><span class="tg2 line">追加の準備なし</span></div>
+    <div class="chips"><a href="#overview">概要</a><a href="#scenes">使う場面</a><a href="#prep">準備</a><a href="#steps">使い方</a><a href="#examples">具体例</a><a href="#tips">頼み方のコツ</a><a href="#can">できること</a><a href="#faq">よくある質問</a><a href="#info">導入情報</a></div>
+  </div>
+  <div class="vis" data-anim="">
+<button class="rp" data-replay="parent">もう一度</button>
+<div class="sheet">
+<div class="hd">.agents/product-marketing.md</div>
+<div class="sr" style="--i:0"><span>対象者</span><div><em style="--w:90%"></em><em style="--w:55%"></em></div></div>
+<div class="sr" style="--i:1"><span>悩み</span><div><em style="--w:80%"></em><em style="--w:62%"></em></div></div>
+<div class="sr" style="--i:2"><span>提供内容</span><div><em style="--w:95%"></em><em style="--w:40%"></em></div></div>
+<div class="sr" style="--i:3"><span>強み</span><div><em style="--w:70%"></em><em style="--w:48%"></em></div></div>
+</div>
+<div class="q pp" style="--d0:3.4s">この強みの根拠は？</div>
+</div>
+</div></div></div>
+<section id="overview"><div class="wrap"><p class="kick">▼ 概要</p><h2>このSkillでできること</h2><div class="sum"><p>販売ページやSNSの文章を書く前に、先に決めておきたいのが「誰の、どんな悩みを、どんな形で解決するのか」。product-marketingは、商品、想定顧客、強み、顧客の悩み、伝え方を1つの共通資料にまとめるSkillです。</p><p>できあがる資料は、プロジェクト内の <code class="ic">.agents/product-marketing.md</code>。4つのマーケ系Skillは、この資料を共通の土台として参照できます。</p><p>毎回「うちの講座はね…」と説明し直す手間が消えて、どの媒体でも言っていることが揃う。最初の1本として入れておく意味が大きいSkillです。</p></div></div></section><section id="scenes"><div class="wrap"><p class="kick">▼ 使う場面</p><h2>こんなときに頼れます</h2><div class="scn"><div><h4>講座やテンプレートを売る前に</h4><p>販売文を書く前の土台づくり。誰に何を届けるのかを先に言葉にしておくと、後の工程がぶれにくくなります。</p></div><div><h4>AIへの説明が毎回面倒なとき</h4><p>商品の背景を、何度も書き直していませんか。共通資料にしておけば、各Skillがそこを読んで動きます。</p></div><div><h4>媒体ごとに言い方がバラバラなとき</h4><p>Threadsと販売ページで、強みの説明が食い違う。そんなズレを減らせます。</p></div><div><h4>新しい商品を出す前に頭を整理したいとき</h4><p>考えが散らかっている段階でも、質問に答えていくうちに形になっていきます。</p></div></div></div></section><section id="prep"><div class="wrap"><p class="kick">▼ 使う前の準備</p><h2>用意しておくと、仕上がりが変わります</h2><div class="prep"><div class="chk" style="margin-top:0"><label><input type="checkbox">商品名と、ひと言での説明</label><label><input type="checkbox">想定している相手（職業やレベル感など）</label><label><input type="checkbox">相手が困っていること</label><label><input type="checkbox">提供する内容（動画、テンプレート、相談など）</label><label><input type="checkbox">根拠のある強み（実績や数字は確認済みのものだけ）</label><label><input type="checkbox">避けたい表現や、守りたいトーン</label></div><div class="tip" style="margin-top:0">全部そろっていなくても大丈夫。指示に「不明点は質問して」と添えておけば、足りない部分を聞いてもらえます。</div></div></div></section><section id="steps"><div class="wrap"><p class="kick">▼ 使い方</p><h2>4つのステップで進める</h2><div class="flow" id="fl1" data-anim><div class="fs" style="--i:0"><div class="n">1</div><h4>材料を渡す</h4><p>商品名や、思いつく範囲の情報を、箇条書きのままで伝えます。整っていなくてOK。</p><span class="bar"></span></div><div class="fs" style="--i:1"><div class="n">2</div><h4>質問に答える</h4><p>足りない項目は質問してもらう。「不明点は質問して」の一言を添えるのがコツです。</p><span class="bar"></span></div><div class="fs" style="--i:2"><div class="n">3</div><h4>まとまりを読んで直す</h4><p>対象者、悩み、提供内容、強みの4項目を中心に確認。事実と違う点や盛りすぎた表現は書き換えます。</p><span class="bar"></span></div><div class="fs" style="--i:3"><div class="n">4</div><h4>共通資料として使い回す</h4><p>以降のSkillには「商品資料をもとに」と伝えるだけ。毎回の説明が不要になります。</p><span class="bar"></span></div></div></div></section><section id="examples"><div class="wrap"><p class="kick">▼ 具体例</p><h2>こう頼むと、こう返ってきます</h2><p class="lead">場面ごとの指示と、出力のイメージです。出力はすべて、説明用に作った架空の例。実際の結果は、渡す材料によって変わります。</p>
+<div class="exm" id="ex-a">
+  <div class="exm-h"><span class="exl">具体例 A</span><h3>講座の商品情報を整理する</h3></div>
+  <p class="sit">AI初心者向けの講座を売りたい。まずは商品の整理から。</p>
+  <div class="exm-g">
+    <div><h4>▼ Claudeへの指示</h4><div class="prompt"><p>/product-marketing AI初心者向け講座の商品情報を整理して。対象者、解決する悩み、提供内容、根拠のある強みをまとめ、不明点は質問して</p><button class="cp">コピー</button></div><div class="pt">項目名を指定しておくと、出力の形が揃います。「不明点は質問して」で思い込みの補完も防げます。</div></div>
+    <div><h4>▼ 商品資料の出力イメージ（架空の例）</h4><div class="out"><div class="orow"><b>対象者</b><span>AIをこれから使い始めたい会社員やフリーランス</span></div><div class="orow"><b>悩み</b><span>何から始めればいいか分からない。毎日の作業に時間を取られている。</span></div><div class="orow"><b>提供内容</b><span>動画レッスン、すぐ試せるテンプレート集、質問ができる場</span></div><div class="orow"><b>強み</b><span>初心者の言葉で説明する。実際の仕事の場面で練習できる。</span></div><div class="orow"><b>確認したい点</b><span>実績の数字、受講後の変化を示す根拠、価格と申し込み方法</span></div></div></div>
+  </div>
+</div>
+<div class="exm" id="ex-b">
+  <div class="exm-h"><span class="exl">具体例 B</span><h3>テンプレート商品を整理する</h3></div>
+  <p class="sit">SNS投稿カレンダーのテンプレートを販売したい。違いを言葉にできていない。</p>
+  <div class="exm-g">
+    <div><h4>▼ Claudeへの指示</h4><div class="prompt"><p>/product-marketing SNS投稿カレンダーのテンプレートの商品情報を整理して。使う場面、解決する悩み、含まれるもの、ほかのテンプレートとの違いを整理し、足りない情報は質問して</p><button class="cp">コピー</button></div><div class="pt">「違い」は自分では当たり前になりがち。質問してもらうことで、言葉が引き出されます。</div></div>
+    <div><h4>▼ Claudeからの質問イメージ（架空の例）</h4><div class="out"><p>整理の途中で、確認したい点が3つあります。</p><ul><li>テンプレートの形式は何ですか（スプレッドシート、Notionなど）</li><li>1か月分の投稿枠のほかに、記入例は含まれますか</li><li>ほかのテンプレートと比べて、いちばん違う点はどこですか</li></ul><p>お答えいただいたあとで、商品資料にまとめます。</p></div></div>
+  </div>
+</div>
+<div class="exm" id="ex-c">
+  <div class="exm-h"><span class="exl">具体例 C</span><h3>個人向けサービスを整理する</h3></div>
+  <p class="sit">月1回のオンライン相談を始めたい。誰に向いているのか、言語化したい。</p>
+  <div class="exm-g">
+    <div><h4>▼ Claudeへの指示</h4><div class="prompt"><p>/product-marketing 月1回のオンライン相談サービスの商品情報を整理して。誰のどんな相談に向いているか、向いていないケース、進め方を明確にして</p><button class="cp">コピー</button></div><div class="pt">「向いていないケース」まで書き出すと、後の販売文で期待値のズレを防げます。</div></div>
+    <div><h4>▼ 商品資料の出力イメージ（架空の例）</h4><div class="out"><div class="orow"><b>向いている人</b><span>仕事の進め方を整理したい人。次の一歩を一緒に考えたい人。</span></div><div class="orow"><b>向いていない人</b><span>資格取得の指導を求める人。毎日の伴走を期待する人。</span></div><div class="orow"><b>進め方</b><span>事前にヒアリングシートを記入。当日は60分の対話。後日、要点を共有。</span></div><div class="orow"><b>確認したい点</b><span>料金、キャンセル規定、相談できる範囲の線引き</span></div></div></div>
+  </div>
+</div>
+<div class="exm" id="ex-d">
+  <div class="exm-h"><span class="exl">具体例 D</span><h3>手元の説明文から整理する</h3></div>
+  <p class="sit">すでに書いてある紹介文がある。そこから不足を洗い出したい。</p>
+  <div class="exm-g">
+    <div><h4>▼ Claudeへの指示</h4><div class="prompt"><p>/product-marketing 下の説明文を読んで、商品資料の形に整理して。説明文にない情報は補わず、足りない項目は質問して。（ここに説明文を貼る）</p><button class="cp">コピー</button></div><div class="pt">「補わず」の一言が大事。AIが想像で埋めた内容が混ざるのを防げます。</div></div>
+    <div><h4>▼ 出力イメージ（架空の例）</h4><div class="out"><div class="orow"><b>整理できた項目</b><span>対象者、提供内容、強み（説明文に記載あり）</span></div><div class="orow"><b>説明文にない項目</b><span>顧客の悩み、価格、申し込み方法、実績の根拠</span></div><div class="orow"><b>質問</b><span>上の4項目について、分かる範囲で教えてください。</span></div></div></div>
+  </div>
+</div></div></section><section id="tips"><div class="wrap"><p class="kick">▼ 頼み方のコツ</p><h2>ひと工夫で、返ってくる質が変わる</h2><div class="vsrow"><div class="vsb bad"><span class="vl">✘ ありがちな頼み方</span><p>商品情報をまとめて</p></div><div class="vsb good"><span class="vl">✔ おすすめの頼み方</span><p>/product-marketing AI初心者向け講座の商品情報を整理して。対象者、解決する悩み、提供内容、根拠のある強みをまとめ、不明点は質問して</p><button class="cp">コピー</button></div><p class="vsp">項目を指定して、質問も許可する。出力の形が揃い、抜けも見つかります。</p></div><div class="vsrow"><div class="vsb bad"><span class="vl">✘ ありがちな頼み方</span><p>いい感じの強みを考えて</p></div><div class="vsb good"><span class="vl">✔ おすすめの頼み方</span><p>強みは、私が伝えた事実だけから書いて。実績の数字は作らないで</p><button class="cp">コピー</button></div><p class="vsp">根拠のない強みは、後の販売文で誇張の原因になります。事実の範囲を先に決めておきましょう。</p></div></div></section><section id="can"><div class="wrap"><p class="kick">▼ できること、できないこと</p><h2>得意なこと、任せられないこと</h2><div class="cc"><div class="yes"><h4>得意なこと</h4><ul><li>商品、顧客、強み、悩み、伝え方の整理</li><li>足りない情報の質問</li><li>後続のSkillが読める共通資料づくり</li></ul></div><div class="no"><h4>任せられないこと</h4><ul><li>実績や根拠の裏づけを用意すること（確認は人の仕事）</li><li>秘密情報の管理（そもそも資料に入れない）</li><li>売上や成果の保証</li></ul></div></div></div></section><section id="faq"><div class="wrap"><p class="kick">▼ よくある質問</p><h2>つまずきやすいところ</h2><div class="faq"><details><summary>資料の保存先は？</summary><p>プロジェクト内の <code class="ic">.agents/product-marketing.md</code> です。これは作られる商品資料の置き場所で、Skill本体の導入先（.claude/skills）とは別のものです。</p></details><details><summary>4つのマーケ系Skillすべてで必要ですか？</summary><p>4つは共通の商品資料を参照できる作りです。最初に作っておくと、あとの工程が楽になります。</p></details><details><summary>あとから内容を変えたいときは？</summary><p>資料のファイルを開いて直接書き換えるか、「この点を変えて」と追加で頼みます。</p></details><details><summary>顧客の個人情報を入れてもいい？</summary><p>入れないでください。商品資料に秘密情報は入れないのが前提です。最初は匿名化した情報で試しましょう。</p></details></div></div></section><section id="info"><div class="wrap"><p class="kick">▼ 導入情報</p><h2>導入するときに確認すること</h2><dl class="metat"><dt>導入元</dt><dd>B　skills/product-marketing</dd><dt>コピー先</dt><dd>&lt;保存先&gt;/product-marketing</dd><dt>確認するファイル</dt><dd>&lt;保存先&gt;/product-marketing/SKILL.md</dd><dt>依存関係</dt><dd>対話と文章作成なら追加ランタイム不要</dd><dt>ライセンス</dt><dd>MIT</dd><dt>確認したSKILL.md</dt><dd><a href="https://github.com/coreyhaines31/marketingskills/blob/dda3841f0b294e01e93b1541486beefbfab0915e/skills/product-marketing/SKILL.md" target="_blank" rel="noopener">GitHubで開く</a>（確認時のコミットに固定したページ）</dd></dl><div class="warn" style="margin-top:22px"><b>注意</b>　商品資料に、秘密情報、顧客名、パスワード、APIキーは書かないこと。</div></div></section><div class="wrap"><div class="pager"><a class="pg empty" href="#/skills"></a><a class="pg next" href="#/skills/content-strategy"><small>次のSkill</small><b>2　content-strategy</b><span>記事の柱とテーマの優先順位を決める</span></a></div></div>
+</main>
+<main class="route" data-route="/skills/skill-creator" data-title="skill-creator" hidden>
+
+<div class="phero"><div class="wrap"><div class="grid">
+  <div>
+    <p class="crumb"><a href="#/">ホーム</a> / <a href="#/skills">7つのSkill</a> / skill-creator</p>
+    <p class="kick">▼ Skill 7 / 7</p>
+    <h1 class="skname">skill-creator</h1>
+    <p class="skline">よく使う指示を、自分専用のSkillに育てる</p>
+    <div class="tagrow"><span class="tg2 ">A　Anthropic公式</span><span class="tg2 line">Apache-2.0</span><span class="tg2 line">草案づくりは追加の準備なし（自動評価にはPython、claude CLIなど）</span></div>
+    <div class="chips"><a href="#overview">概要</a><a href="#scenes">使う場面</a><a href="#prep">準備</a><a href="#steps">使い方</a><a href="#examples">具体例</a><a href="#tips">頼み方のコツ</a><a href="#can">できること</a><a href="#faq">よくある質問</a><a href="#info">導入情報</a></div>
+  </div>
+  <div class="vis" data-anim="">
+<div class="cyc">
+<div class="rg"></div>
+<span class="nd">手順を整理</span><span class="nd">草案を作る</span><span class="nd">テストする</span><span class="nd">改善する</span>
+<div class="ct">自分専用<br/>Skill</div>
+</div>
+<p style="text-align:center;margin-top:14px;color:#9FAACB;font-size:.78rem">回すほど、使いやすい手順書に育ちます。</p>
+</div>
+</div></div></div>
+<section id="overview"><div class="wrap"><p class="kick">▼ 概要</p><h2>このSkillでできること</h2><div class="sum"><p>繰り返し使う手順を、独自のSkillにまとめるSkillです。例題で試して、直して、また試す。そんな改善の流れまで含めて、手伝ってもらえます。</p><p>「毎回、長い指示を貼っている」仕事が見つかったら出番です。記事の構成チェック、講座案からSNS下書きへの変換などが候補になります。</p><p>おすすめのタイミングは、最初の6つを何度か使って、安定した手順が見えてきたあと。いきなり作るより、実際に使った経験がそのまま材料になります。</p><p>説明文の自動評価・改善は別枠で、認証済みのclaude CLIを使い、実行量に応じて利用枠を消費します。まずは草案づくりだけで十分です。</p></div></div></section><section id="scenes"><div class="wrap"><p class="kick">▼ 使う場面</p><h2>こんなときに頼れます</h2><div class="scn"><div><h4>同じ指示を何度も貼っているとき</h4><p>貼る回数が増えたら、Skill化のサインです。</p></div><div><h4>出力のバラつきを減らしたいとき</h4><p>手順とチェック項目を固定すれば、仕上がりが安定します。</p></div><div><h4>公開前のチェック漏れを防ぎたいとき</h4><p>確認項目をSkillに入れておけば、毎回同じ観点で点検できます。</p></div><div><h4>自分の得意な書き方を再現したいとき</h4><p>うまくいった例を材料にして、自分流の型を手順にします。</p></div></div></div></section><section id="prep"><div class="wrap"><p class="kick">▼ 使う前の準備</p><h2>用意しておくと、仕上がりが変わります</h2><div class="prep"><div class="chk" style="margin-top:0"><label><input type="checkbox">繰り返している作業の説明</label><label><input type="checkbox">うまくいった入力と出力の例</label><label><input type="checkbox">必要な入力と、出力の形式</label><label><input type="checkbox">公開前に確認したい項目</label><label><input type="checkbox">自動評価を使う場合は、Python、PyYAML、認証済みのclaude CLI</label></div><div class="tip" style="margin-top:0">最初の草案づくりには、上のうち最初の4つがあれば足ります。</div></div></div></section><section id="steps"><div class="wrap"><p class="kick">▼ 使い方</p><h2>4つのステップで進める</h2><div class="flow" id="fl7" data-anim><div class="fs" style="--i:0"><div class="n">1</div><h4>手順を洗い出す</h4><p>いつもやっている作業を、順番に書き出します。入力と出力もセットで。</p><span class="bar"></span></div><div class="fs" style="--i:1"><div class="n">2</div><h4>草案とテスト例を作る</h4><p>Skillの草案と、試すための例題を数件つくってもらいます。</p><span class="bar"></span></div><div class="fs" style="--i:2"><div class="n">3</div><h4>試して、直す</h4><p>例題で動かして、気になる点を伝えます。何度か繰り返すうちに、安定していきます。</p><span class="bar"></span></div><div class="fs" style="--i:3"><div class="n">4</div><h4>skillsフォルダーに置く</h4><p>他のSkillと同じように、&lt;保存先&gt;/&lt;Skill名&gt;/SKILL.md の形で置きます。</p><span class="bar"></span></div></div></div></section><section id="examples"><div class="wrap"><p class="kick">▼ 具体例</p><h2>こう頼むと、こう返ってきます</h2><p class="lead">場面ごとの指示と、出力のイメージです。出力はすべて、説明用に作った架空の例。実際の結果は、渡す材料によって変わります。</p>
+<div class="exm" id="ex-a">
+  <div class="exm-h"><span class="exl">具体例 A</span><h3>SNS下書きの手順をSkill化する</h3></div>
+  <p class="sit">記事からSNS下書きを作る作業を、毎回同じ指示で頼んでいる。</p>
+  <div class="exm-g">
+    <div><h4>▼ Claudeへの指示</h4><div class="prompt"><p>/skill-creator 記事からSNS下書きを作る手順をSkill化したい。必要な入力、出力形式、公開前の確認項目を整理して、まず草案とテスト例を3件作って</p><button class="cp">コピー</button></div><div class="pt">「まず草案とテスト例を3件」と、範囲を絞って頼むのがコツ。自動評価は後回しにできます。</div></div>
+    <div><h4>▼ 草案の出力イメージ（架空の例）</h4><div class="out"><div class="orow"><b>name</b><span>sns-draft-from-article（例）</span></div><div class="orow"><b>説明</b><span>記事の本文から、媒体別のSNS下書きを作る手順</span></div><div class="orow"><b>入力</b><span>記事の本文、媒体と本数、トーンの希望</span></div><div class="orow"><b>出力</b><span>媒体別の下書き。元の記事にない数値は使わない</span></div><div class="orow"><b>公開前の確認</b><span>数字と体験談が元の記事にあるか、誇張がないか</span></div></div></div>
+  </div>
+</div>
+<div class="exm" id="ex-b">
+  <div class="exm-h"><span class="exl">具体例 B</span><h3>記事の構成チェックをSkill化する</h3></div>
+  <p class="sit">公開前に毎回、同じ観点で記事を見直している。</p>
+  <div class="exm-g">
+    <div><h4>▼ Claudeへの指示</h4><div class="prompt"><p>/skill-creator 公開前の記事をチェックする手順をSkill化したい。見出しの流れ、専門用語の説明、誇張表現の有無を確認する項目にして。まず草案を出して</p><button class="cp">コピー</button></div><div class="pt">チェックしたい観点を先に挙げると、抜けのない手順になります。</div></div>
+    <div><h4>▼ チェック項目の出力イメージ（架空の例）</h4><div class="out"><ul><li>見出しの流れが、読者の疑問の順になっているか</li><li>専門用語に、短い説明がついているか</li><li>強い断定や、根拠のない数字がないか</li><li>最後に、読者の次の行動が示されているか</li></ul></div></div>
+  </div>
+</div>
+<div class="exm" id="ex-c">
+  <div class="exm-h"><span class="exl">具体例 C</span><h3>講座の企画メモをLP原稿に変える</h3></div>
+  <p class="sit">企画メモから、販売ページの原稿を作る流れを定型化したい。</p>
+  <div class="exm-g">
+    <div><h4>▼ Claudeへの指示</h4><div class="prompt"><p>/skill-creator 講座の企画メモから、販売ページの原稿の下書きを作る手順をSkill化したい。必要な入力と、出力の形式を先に整理して。テスト例は2件</p><button class="cp">コピー</button></div><div class="pt">入力と出力を先に決めると、使うたびに結果が揃います。</div></div>
+    <div><h4>▼ 入力と出力の整理イメージ（架空の例）</h4><div class="out"><table><thead><tr><th></th><th>内容</th></tr></thead><tbody><tr><td>入力</td><td>対象者、悩み、学べること、含まれるもの、確認済みの価格</td></tr><tr><td>出力</td><td>見出し、本文、ボタン文言までの原稿。未確認の項目は「要確認」と表示</td></tr></tbody></table></div></div>
+  </div>
+</div>
+<div class="exm" id="ex-d">
+  <div class="exm-h"><span class="exl">具体例 D</span><h3>説明文の自動評価に進む（上級）</h3></div>
+  <p class="sit">作ったSkillが、思った場面で呼び出されない。説明文を改善したい。</p>
+  <div class="exm-g">
+    <div><h4>▼ Claudeへの指示</h4><div class="prompt"><p>/skill-creator 作ったSkillのdescriptionを、呼び出されやすい文章に改善したい。自動評価は、利用枠を確認してから実行したいので、先に手順だけ教えて</p><button class="cp">コピー</button></div><div class="pt">利用枠を消費する作業は、手順の確認から。実行は、自分で判断してからにしましょう。</div></div>
+    <div><h4>▼ 手順の出力イメージ（架空の例）</h4><div class="out"><ul><li>必要なもの　Python、PyYAML、認証済みのclaude CLI</li><li>評価の前に、テスト用の依頼文を用意する</li><li>実行量に応じて、利用枠を消費する</li><li>Windowsネイティブより、WSL、Linux、macOSが無難</li></ul></div></div>
+  </div>
+</div></div></section><section id="tips"><div class="wrap"><p class="kick">▼ 頼み方のコツ</p><h2>ひと工夫で、返ってくる質が変わる</h2><div class="vsrow"><div class="vsb bad"><span class="vl">✘ ありがちな頼み方</span><p>便利なSkillを作って</p></div><div class="vsb good"><span class="vl">✔ おすすめの頼み方</span><p>/skill-creator 記事からSNS下書きを作る手順をSkill化したい。必要な入力、出力形式、公開前の確認項目を整理して、まず草案とテスト例を3件作って</p><button class="cp">コピー</button></div><p class="vsp">どの作業を、どんな形にしたいのか。具体的な作業名を伝えると、使えるSkillの草案になります。</p></div><div class="vsrow"><div class="vsb bad"><span class="vl">✘ ありがちな頼み方</span><p>全部おまかせで、自動評価まで</p></div><div class="vsb good"><span class="vl">✔ おすすめの頼み方</span><p>まず草案とテスト例3件まで。自動評価は、利用枠を確認してから別に頼みます</p><button class="cp">コピー</button></div><p class="vsp">自動評価は利用枠を消費します。草案づくりと分けて、段階を踏みましょう。</p></div></div></section><section id="can"><div class="wrap"><p class="kick">▼ できること、できないこと</p><h2>得意なこと、任せられないこと</h2><div class="cc"><div class="yes"><h4>得意なこと</h4><ul><li>繰り返し手順のSkill化（草案づくり）</li><li>テスト例の作成と改善の繰り返し</li><li>説明文の改善（自動評価は環境が整えば）</li></ul></div><div class="no"><h4>任せられないこと</h4><ul><li>利用枠の消費を肩代わりすること</li><li>Windowsネイティブでの評価機能の動作保証（実動作テストは未実施）</li><li>作ったSkillの品質の保証</li></ul></div></div></div></section><section id="faq"><div class="wrap"><p class="kick">▼ よくある質問</p><h2>つまずきやすいところ</h2><div class="faq"><details><summary>作ったSkillはどこに置きますか？</summary><p>他のSkillと同じです。&lt;保存先&gt;/&lt;Skill名&gt;/SKILL.md の形で、skillsフォルダーに置きます。</p></details><details><summary>自動評価は必須ですか？</summary><p>必須ではありません。草案づくりだけで、まず十分に役立ちます。</p></details><details><summary>Windowsでも使えますか？</summary><p>草案づくりは問題ありません。評価機能は、確認した版のスクリプトの仕様上、WSL、Linux、macOSが無難という判断です。Windowsネイティブでの実動作テストは未実施です。</p></details><details><summary>利用枠はどれくらい減りますか？</summary><p>説明文の自動評価・改善では、認証済みのclaude CLIを使い、実行量に応じて利用枠を消費します。最初は小さく試しましょう。</p></details></div></div></section><section id="info"><div class="wrap"><p class="kick">▼ 導入情報</p><h2>導入するときに確認すること</h2><dl class="metat"><dt>導入元</dt><dd>A　skills/skill-creator</dd><dt>コピー先</dt><dd>&lt;保存先&gt;/skill-creator</dd><dt>確認するファイル</dt><dd>&lt;保存先&gt;/skill-creator/SKILL.md</dd><dt>依存関係</dt><dd>ヘルパー利用にPython、一部の検証にPyYAML。説明文の自動評価・改善には認証済みのclaude CLI</dd><dt>ライセンス</dt><dd>Apache-2.0</dd><dt>確認したSKILL.md</dt><dd><a href="https://github.com/anthropics/skills/blob/8a1541c4a3ffa5a20a5a91de0dcf3f0bab1d1ef4/skills/skill-creator/SKILL.md" target="_blank" rel="noopener">GitHubで開く</a>（確認時のコミットに固定したページ）</dd></dl><div class="warn" style="margin-top:22px"><b>注意</b>　自動評価は利用枠を消費します。評価機能は、WSL、Linux、macOSでの利用が無難です（Windowsネイティブでの実動作テストは未実施）。</div></div></section><div class="wrap"><div class="pager"><a class="pg" href="#/skills/webapp-testing"><small>前のSkill</small><b>6　webapp-testing</b><span>作ったページを、自動で操作して動作確認する</span></a><a class="pg next" href="#/start"><small>次は</small><b>使い始め方</b><span>7つで1周する流れと、注意点のチェック</span></a></div></div>
+</main>
+<main class="route" data-route="/skills/social" data-title="social" hidden>
+
+<div class="phero"><div class="wrap"><div class="grid">
+  <div>
+    <p class="crumb"><a href="#/">ホーム</a> / <a href="#/skills">7つのSkill</a> / social</p>
+    <p class="kick">▼ Skill 4 / 7</p>
+    <h1 class="skname">social</h1>
+    <p class="skline">1本つくった素材を、媒体に合わせて何本にも広げる</p>
+    <div class="tagrow"><span class="tg2 B">B　Marketing Skills</span><span class="tg2 line">MIT</span><span class="tg2 line">追加の準備なし（実際の投稿には別サービスが必要）</span></div>
+    <div class="chips"><a href="#overview">概要</a><a href="#scenes">使う場面</a><a href="#prep">準備</a><a href="#steps">使い方</a><a href="#examples">具体例</a><a href="#tips">頼み方のコツ</a><a href="#can">できること</a><a href="#faq">よくある質問</a><a href="#info">導入情報</a></div>
+  </div>
+  <div class="vis" data-anim="">
+<button class="rp" data-replay="parent">もう一度</button>
+<div class="fan">
+<div class="art"><i></i><i></i><i></i><i></i><i></i></div>
+<div class="arr"></div>
+<div class="posts">
+<div class="po pp" style="--i:0">Threads<small>下書き1</small></div>
+<div class="po pp" style="--i:1">Threads<small>下書き2</small></div>
+<div class="po pp" style="--i:2">Threads<small>下書き3</small></div>
+<div class="po pp" style="--i:3">Threads<small>下書き4</small></div>
+<div class="po pp" style="--i:4">Threads<small>下書き5</small></div>
+<div class="po ig pp" style="--i:5">Instagram<small>キャプション</small></div>
+</div>
+</div>
+<p style="margin-top:16px;color:#9FAACB;font-size:.78rem">解説記事1本から、媒体に合わせた6本の下書きへ。</p>
+</div>
+</div></div></div>
+<section id="overview"><div class="wrap"><p class="kick">▼ 概要</p><h2>このSkillでできること</h2><div class="sum"><p>記事や動画の内容を、Xの投稿、LinkedInの文章、Instagram向けの構成など、媒体に合わせた文章へ作り直すSkillです。1本の素材を複数の発信に使い回す仕組みづくりに向いています。</p><p>現行のフォルダー名と呼び出し名は social。導入後は、/skills で表示される名前を基準にすると迷いません。</p><p>できるのは、文章案と投稿計画の作成まで。実際の予約投稿や公開には、対応サービスのAPIやMCPなどが別に必要です。Skillを置くだけでは、何も投稿されません。</p></div></div></section><section id="scenes"><div class="wrap"><p class="kick">▼ 使う場面</p><h2>こんなときに頼れます</h2><div class="scn"><div><h4>記事を公開したあとの告知</h4><p>記事のポイントを、短い投稿に分けて下書きします。</p></div><div><h4>動画の内容を投稿に変えたいとき</h4><p>文字起こしを素材にして、媒体向けの文章に整えます。</p></div><div><h4>1週間分の投稿をまとめて用意したいとき</h4><p>曜日ごとの狙いと、下書きを一度に作ります。</p></div><div><h4>媒体ごとにトーンを変えたいとき</h4><p>カジュアルなSNSと、落ち着いたビジネス向けの場で、文章の雰囲気を調整します。</p></div></div></div></section><section id="prep"><div class="wrap"><p class="kick">▼ 使う前の準備</p><h2>用意しておくと、仕上がりが変わります</h2><div class="prep"><div class="chk" style="margin-top:0"><label><input type="checkbox">元になる記事や動画の文字起こし</label><label><input type="checkbox">使ってよい体験談や数値（元の素材にあるものだけ）</label><label><input type="checkbox">媒体と本数</label><label><input type="checkbox">トーンの希望（ですます中心、体言止め多めなど）</label><label><input type="checkbox">記事へのリンクや、締めの一言</label></div><div class="tip" style="margin-top:0">過去の自分の投稿を数本貼ると、口調が近づきやすくなります。</div></div></div></section><section id="steps"><div class="wrap"><p class="kick">▼ 使い方</p><h2>4つのステップで進める</h2><div class="flow" id="fl4" data-anim><div class="fs" style="--i:0"><div class="n">1</div><h4>素材を渡す</h4><p>記事の本文や、動画の文字起こしを貼ります。</p><span class="bar"></span></div><div class="fs" style="--i:1"><div class="n">2</div><h4>媒体と本数を指定する</h4><p>「Threadsを5本とInstagramのキャプションを1本」のように、具体的に。</p><span class="bar"></span></div><div class="fs" style="--i:2"><div class="n">3</div><h4>下書きを確認する</h4><p>元の素材にない数値や体験談が混ざっていないかをチェックします。</p><span class="bar"></span></div><div class="fs" style="--i:3"><div class="n">4</div><h4>自分の手で投稿する</h4><p>予約や自動投稿をしたい場合は、対応サービスとの連携を別に用意します。</p><span class="bar"></span></div></div></div></section><section id="examples"><div class="wrap"><p class="kick">▼ 具体例</p><h2>こう頼むと、こう返ってきます</h2><p class="lead">場面ごとの指示と、出力のイメージです。出力はすべて、説明用に作った架空の例。実際の結果は、渡す材料によって変わります。</p>
+<div class="exm" id="ex-a">
+  <div class="exm-h"><span class="exl">具体例 A</span><h3>記事からThreadsとInstagramへ</h3></div>
+  <p class="sit">解説記事を公開した。告知を複数の形で出したい。</p>
+  <div class="exm-g">
+    <div><h4>▼ Claudeへの指示</h4><div class="prompt"><p>/social この解説記事を、Threads投稿の下書き5本とInstagramのキャプション1本にして。体験談や数値は元の記事にあるものだけ。まず下書きまで</p><button class="cp">コピー</button></div><div class="pt">「まず下書きまで」で、公開の手前で止めます。確認のステップを自分で握れます。</div></div>
+    <div><h4>▼ 下書きの出力イメージ（架空の例）</h4><div class="out"><div class="orow"><b>Threads 1</b><span>AIに頼む前の一手間。「誰に向けて、何をしてほしいか」を1行書くだけで、返ってくる答えが使いやすくなります。</span></div><div class="orow"><b>Threads 2</b><span>つまずきの多くは、道具の使い方より「最初に何を頼むか」。まずは毎日の小さな作業から。</span></div><div class="orow"><b>Instagram</b><span>記事の要点を3つの場面にまとめた構成案と、キャプションの下書き。（以下略）</span></div></div></div>
+  </div>
+</div>
+<div class="exm" id="ex-b">
+  <div class="exm-h"><span class="exl">具体例 B</span><h3>動画からX向けの投稿へ</h3></div>
+  <p class="sit">解説動画を作った。文字起こしを使って、短い投稿にしたい。</p>
+  <div class="exm-g">
+    <div><h4>▼ Claudeへの指示</h4><div class="prompt"><p>/social この動画の文字起こしから、X向けの投稿案を5本作って。1投稿は短く、冒頭で内容が伝わる形に。元の話にない数字は使わないで</p><button class="cp">コピー</button></div><div class="pt">「冒頭で内容が伝わる形」と頼むと、流し読みでも伝わる投稿になりやすいです。</div></div>
+    <div><h4>▼ 投稿案の出力イメージ（架空の例）</h4><div class="out"><ul><li>案1　動画の主張を1文で言い切る形</li><li>案2　よくある疑問を投げかけて、答えは動画へ誘導</li><li>案3　動画の中の具体例を1つだけ紹介</li><li>案4　間違えやすいポイントの先回り</li><li>案5　視聴後に試せる、小さな行動の提案</li></ul></div></div>
+  </div>
+</div>
+<div class="exm" id="ex-c">
+  <div class="exm-h"><span class="exl">具体例 C</span><h3>LinkedIn向けの文章にする</h3></div>
+  <p class="sit">同じ記事を、ビジネスの場で読まれる形に書き直したい。</p>
+  <div class="exm-g">
+    <div><h4>▼ Claudeへの指示</h4><div class="prompt"><p>/social この記事をLinkedIn向けの文章にして。ビジネスの場面に合うトーンで、学びが3点ほど伝わる構成に</p><button class="cp">コピー</button></div><div class="pt">媒体名とトーンをセットで伝えると、文体の切り替えがうまくいきます。</div></div>
+    <div><h4>▼ 構成の出力イメージ（架空の例）</h4><div class="out"><div class="orow"><b>書き出し</b><span>業務の中で、AIに頼む前に整理しておきたいこと</span></div><div class="orow"><b>学び1〜3</b><span>目的を1行にする。相手と場面を決める。出力の形を指定する。</span></div><div class="orow"><b>締め</b><span>記事へのリンクと、読者に向けた問いかけ</span></div></div></div>
+  </div>
+</div>
+<div class="exm" id="ex-d">
+  <div class="exm-h"><span class="exl">具体例 D</span><h3>1週間分の投稿計画を作る</h3></div>
+  <p class="sit">毎日投稿したいが、ネタ出しの時間がない。</p>
+  <div class="exm-g">
+    <div><h4>▼ Claudeへの指示</h4><div class="prompt"><p>/social この記事を素材に、1週間分の投稿計画を作って。曜日ごとの狙いと、下書きの冒頭1行だけ。公開や予約はしないで</p><button class="cp">コピー</button></div><div class="pt">全文ではなく冒頭1行だけ頼むと、全体のバランスを先に確認できます。</div></div>
+    <div><h4>▼ 投稿計画の出力イメージ（架空の例）</h4><div class="out"><table><thead><tr><th>曜日</th><th>狙い</th><th>冒頭の1行</th></tr></thead><tbody><tr><td>月</td><td>問いかけ</td><td>AIに最初に頼むこと、決まっていますか？</td></tr><tr><td>水</td><td>具体例</td><td>議事録づくりで、いちばん時間が減った工程。</td></tr><tr><td>金</td><td>まとめと案内</td><td>今週の学びを3行で。続きは記事で。</td></tr></tbody></table></div></div>
+  </div>
+</div></div></section><section id="tips"><div class="wrap"><p class="kick">▼ 頼み方のコツ</p><h2>ひと工夫で、返ってくる質が変わる</h2><div class="vsrow"><div class="vsb bad"><span class="vl">✘ ありがちな頼み方</span><p>SNSに投稿して</p></div><div class="vsb good"><span class="vl">✔ おすすめの頼み方</span><p>SNS用の下書きを作って。公開はしないで</p><button class="cp">コピー</button></div><p class="vsp">このSkillは文章案づくりまで。投稿そのものは、別の仕組みか自分の手で行います。</p></div><div class="vsrow"><div class="vsb bad"><span class="vl">✘ ありがちな頼み方</span><p>いい感じに5本</p></div><div class="vsb good"><span class="vl">✔ おすすめの頼み方</span><p>/social この解説記事を、Threads投稿の下書き5本とInstagramのキャプション1本にして。体験談や数値は元の記事にあるものだけ。まず下書きまで</p><button class="cp">コピー</button></div><p class="vsp">媒体、本数、素材の範囲を決めると、使いやすい下書きになります。</p></div></div></section><section id="can"><div class="wrap"><p class="kick">▼ できること、できないこと</p><h2>得意なこと、任せられないこと</h2><div class="cc"><div class="yes"><h4>得意なこと</h4><ul><li>媒体向けの文章案づくり</li><li>投稿計画の作成</li><li>1本の素材を使い回す設計</li></ul></div><div class="no"><h4>任せられないこと</h4><ul><li>自動投稿や予約投稿（対応サービスのAPIやMCPが別に必要）</li><li>元の素材にない数字や体験談を用意すること</li><li>アカウントとの連携</li></ul></div></div></div></section><section id="faq"><div class="wrap"><p class="kick">▼ よくある質問</p><h2>つまずきやすいところ</h2><div class="faq"><details><summary>自動で投稿されますか？</summary><p>されません。Skillを置くだけでは投稿は行われません。自動化したい場合は、対応サービスのAPIやMCPを別に用意します。</p></details><details><summary>Threadsにも対応していますか？</summary><p>例ではThreads向けの下書きを依頼していますが、これは文章を媒体に合わせて整える依頼です。API連携や自動投稿の機能が内蔵されている、という意味ではありません。</p></details><details><summary>自分の口調に合わせたいです</summary><p>過去の投稿を数本貼って「この口調で」と添えるのが近道。口調の特徴を言葉で伝えるのも有効です。</p></details><details><summary>似た内容ばかりになります</summary><p>「1本ごとに違う切り口で」と頼み直してみましょう。</p></details></div></div></section><section id="info"><div class="wrap"><p class="kick">▼ 導入情報</p><h2>導入するときに確認すること</h2><dl class="metat"><dt>導入元</dt><dd>B　skills/social</dd><dt>コピー先</dt><dd>&lt;保存先&gt;/social</dd><dt>確認するファイル</dt><dd>&lt;保存先&gt;/social/SKILL.md</dd><dt>依存関係</dt><dd>文章案と投稿計画なら追加ランタイム不要。実際の予約投稿・公開には、対応サービスのAPIやMCPなどが別途必要</dd><dt>ライセンス</dt><dd>MIT</dd><dt>確認したSKILL.md</dt><dd><a href="https://github.com/coreyhaines31/marketingskills/blob/dda3841f0b294e01e93b1541486beefbfab0915e/skills/social/SKILL.md" target="_blank" rel="noopener">GitHubで開く</a>（確認時のコミットに固定したページ）</dd></dl><div class="warn" style="margin-top:22px"><b>注意</b>　文章を媒体向けに整える機能で、自動投稿ではありません。実際の公開前には、内容と数字を人が確認してください。</div></div></section><div class="wrap"><div class="pager"><a class="pg" href="#/skills/copywriting"><small>前のSkill</small><b>3　copywriting</b><span>LPや商品紹介の文章を、一貫した流れで下書きする</span></a><a class="pg next" href="#/skills/frontend-design"><small>次のSkill</small><b>5　frontend-design</b><span>文章を、スマホでも読みやすい画面に作る</span></a></div></div>
+</main>
+<main class="route" data-route="/skills/webapp-testing" data-title="webapp-testing" hidden>
+
+<div class="phero"><div class="wrap"><div class="grid">
+  <div>
+    <p class="crumb"><a href="#/">ホーム</a> / <a href="#/skills">7つのSkill</a> / webapp-testing</p>
+    <p class="kick">▼ Skill 6 / 7</p>
+    <h1 class="skname">webapp-testing</h1>
+    <p class="skline">ボタンも表示も、自動で確かめてもらう</p>
+    <div class="tagrow"><span class="tg2 ">A　Anthropic公式</span><span class="tg2 line">Apache-2.0</span><span class="tg2 line">要準備（Python、Playwright、対応ブラウザー）</span></div>
+    <div class="chips"><a href="#overview">概要</a><a href="#scenes">使う場面</a><a href="#prep">準備</a><a href="#steps">使い方</a><a href="#examples">具体例</a><a href="#tips">頼み方のコツ</a><a href="#can">できること</a><a href="#faq">よくある質問</a><a href="#info">導入情報</a></div>
+  </div>
+  <div class="vis" data-anim="">
+<button class="rp" data-replay="parent">もう一度</button>
+<div class="br2">
+<div class="bar"><i style="background:#C8CEDC"></i></div>
+<div class="pg"><i style="width:80%;background:#14213D;height:12px"></i><i style="width:92%"></i><i style="width:60%"></i><i style="width:75%"></i><div class="sc"></div></div>
+</div>
+<div class="tl">
+<div class="rv" style="--i:0"><span class="t">✔</span>スマホ幅の表示</div>
+<div class="rv" style="--i:1"><span class="t">✔</span>リンクの動作</div>
+<div class="rv" style="--i:2"><span class="t">✔</span>入力エラーの表示</div>
+<div class="rv" style="--i:3"><span class="t">📷</span>スクリーンショットを保存</div>
+</div>
+</div>
+</div></div></div>
+<section id="overview"><div class="wrap"><p class="kick">▼ 概要</p><h2>このSkillでできること</h2><div class="sum"><p>Python版のPlaywrightを使って、ローカルのWebアプリを実際に操作しながら確認するSkillです。ボタンの動作、画面表示、ブラウザのログ、スクリーンショットの確認に使えます。</p><p>LP制作のあとに入れると効果的。人の目だと見落としやすい「スマホ幅での崩れ」や「入力エラーの出方」を、まとめて点検できます。</p><p>フォルダーをコピーしただけでは動きません。Python、Playwright、対応ブラウザーなどの準備が別に必要で、7つの中では手間のかかる部類です。ほかのSkillに慣れてから取り組むと、つまずきにくいでしょう。</p></div></div></section><section id="scenes"><div class="wrap"><p class="kick">▼ 使う場面</p><h2>こんなときに頼れます</h2><div class="scn"><div><h4>LPが完成した直後の最終チェック</h4><p>表示崩れやリンク切れを、公開前にまとめて洗い出します。</p></div><div><h4>フォームの動作を確かめたいとき</h4><p>ダミーデータで、入力エラーや完了画面の出方を確認します。</p></div><div><h4>スマホ幅の表示を確認したいとき</h4><p>画面幅を変えて、レイアウトが崩れていないかを見てもらいます。</p></div><div><h4>修正したあとに、壊れていないか見たいとき</h4><p>直した箇所の前後を比べて、副作用がないか確かめます。</p></div></div></div></section><section id="prep"><div class="wrap"><p class="kick">▼ 使う前の準備</p><h2>用意しておくと、仕上がりが変わります</h2><div class="prep"><div class="chk" style="margin-top:0"><label><input type="checkbox">Python</label><label><input type="checkbox">Playwright（プロジェクト専用の環境で）</label><label><input type="checkbox">対応ブラウザー</label><label><input type="checkbox">確認したいページを動かす、ローカルの環境</label><label><input type="checkbox">ダミーデータ（実在の個人情報は使わない）</label><label><input type="checkbox">「購入・送信・外部公開は行わない」という指示</label></div><div class="tip" style="margin-top:0">準備は、Skillのコピーとは別の作業です。対象のOSと既存の環境を確認してから、プロジェクト専用の環境で進めましょう。</div></div></div></section><section id="steps"><div class="wrap"><p class="kick">▼ 使い方</p><h2>4つのステップで進める</h2><div class="flow" id="fl6" data-anim><div class="fs" style="--i:0"><div class="n">1</div><h4>環境を確認して準備する</h4><p>Python、Playwright、ブラウザーを、プロジェクト専用の環境に入れます。</p><span class="bar"></span></div><div class="fs" style="--i:1"><div class="n">2</div><h4>ローカルでページを動かす</h4><p>確認したいページを、自分のパソコンの中で表示できる状態にします。</p><span class="bar"></span></div><div class="fs" style="--i:2"><div class="n">3</div><h4>確認してほしい内容を頼む</h4><p>見たい項目を具体的に挙げ、「送信や購入はしない」と添えます。</p><span class="bar"></span></div><div class="fs" style="--i:3"><div class="n">4</div><h4>結果を見て修正に戻る</h4><p>問題点とスクリーンショットを見て、frontend-designで直す流れが基本です。</p><span class="bar"></span></div></div><div class="codebox">pip install playwright
+playwright install</div><p style="font-size:.88rem;color:var(--ink2)">上は一般的な手順の例です。版によって変わるため、最新の手順はPlaywright公式（Python）のページで確認してください。 <a href="https://playwright.dev/python/docs/intro" target="_blank" rel="noopener">Playwright for Python 公式ページ</a></p></div></section><section id="examples"><div class="wrap"><p class="kick">▼ 具体例</p><h2>こう頼むと、こう返ってきます</h2><p class="lead">場面ごとの指示と、出力のイメージです。出力はすべて、説明用に作った架空の例。実際の結果は、渡す材料によって変わります。</p>
+<div class="exm" id="ex-a">
+  <div class="exm-h"><span class="exl">具体例 A</span><h3>LPの表示と導線を確認する</h3></div>
+  <p class="sit">LPができた。公開の前に、スマホ幅とリンク、入力エラーを点検したい。</p>
+  <div class="exm-g">
+    <div><h4>▼ Claudeへの指示</h4><div class="prompt"><p>/webapp-testing ローカルのLPで、スマホ幅の表示、リンク、入力エラーを確認して。購入・送信・外部公開は行わず、問題点とスクリーンショットをまとめて</p><button class="cp">コピー</button></div><div class="pt">「行わないこと」を先に書くのが肝心。確認だけにとどめる約束になります。</div></div>
+    <div><h4>▼ 確認結果の出力イメージ（架空の例）</h4><div class="out"><table><thead><tr><th>項目</th><th>結果</th><th>メモ</th></tr></thead><tbody><tr><td>スマホ幅の表示</td><td>要修正</td><td>申し込みボタンが画面の右にはみ出している</td></tr><tr><td>リンクの動作</td><td>問題なし</td><td>全リンクが正しく移動</td></tr><tr><td>入力エラー</td><td>問題なし</td><td>未入力時に案内文が表示された</td></tr></tbody></table></div></div>
+  </div>
+</div>
+<div class="exm" id="ex-b">
+  <div class="exm-h"><span class="exl">具体例 B</span><h3>フォームの動作を確かめる</h3></div>
+  <p class="sit">問い合わせフォームの入力チェックが、期待通りか知りたい。</p>
+  <div class="exm-g">
+    <div><h4>▼ Claudeへの指示</h4><div class="prompt"><p>/webapp-testing ローカルの問い合わせフォームで、必須項目を空のまま送信した場合と、正しいダミー情報を入れた場合の画面表示を確認して。実際の送信先には送らないで</p><button class="cp">コピー</button></div><div class="pt">「実際の送信先には送らない」を明記して、本物のデータを動かさない約束にします。</div></div>
+    <div><h4>▼ 確認結果の出力イメージ（架空の例）</h4><div class="out"><div class="orow"><b>空のまま送信</b><span>必須項目の下に、案内文が表示された</span></div><div class="orow"><b>ダミー情報で送信</b><span>完了画面に切り替わった（実送信なし）</span></div><div class="orow"><b>気づいた点</b><span>案内文の文字が小さく、スマホでは読みにくい</span></div></div></div>
+  </div>
+</div>
+<div class="exm" id="ex-c">
+  <div class="exm-h"><span class="exl">具体例 C</span><h3>ブラウザのエラーログを調べる</h3></div>
+  <p class="sit">見た目は問題ないが、裏でエラーが出ていないか気になる。</p>
+  <div class="exm-g">
+    <div><h4>▼ Claudeへの指示</h4><div class="prompt"><p>/webapp-testing ローカルのページを開いて、ブラウザのコンソールにエラーが出ていないか確認して。出ていれば内容と、考えられる原因を教えて</p><button class="cp">コピー</button></div><div class="pt">原因の見立てまで頼むと、そのまま修正の指示に使えます。</div></div>
+    <div><h4>▼ 確認結果の出力イメージ（架空の例）</h4><div class="out"><div class="orow"><b>エラー</b><span>1件（画像ファイルが見つからない）</span></div><div class="orow"><b>考えられる原因</b><span>画像のファイル名とHTMLの記述が一致していない</span></div><div class="orow"><b>次の一手</b><span>ファイル名を確認して、frontend-designで修正を依頼</span></div></div></div>
+  </div>
+</div>
+<div class="exm" id="ex-d">
+  <div class="exm-h"><span class="exl">具体例 D</span><h3>修正の前後を見比べる</h3></div>
+  <p class="sit">ボタン周りを直した。ほかが崩れていないか確認したい。</p>
+  <div class="exm-g">
+    <div><h4>▼ Claudeへの指示</h4><div class="prompt"><p>/webapp-testing 修正した部分（申し込みボタン周辺）を、スマホ幅とパソコン幅の両方でスクリーンショットに撮って。見た目が崩れていないか確認して</p><button class="cp">コピー</button></div><div class="pt">確認する場所と画面幅を絞ると、結果が読みやすくなります。</div></div>
+    <div><h4>▼ 確認結果の出力イメージ（架空の例）</h4><div class="out"><ul><li>スマホ幅　ボタンが画面内に収まっている</li><li>パソコン幅　余白のバランスに問題なし</li><li>スクリーンショット2枚を保存</li></ul></div></div>
+  </div>
+</div></div></section><section id="tips"><div class="wrap"><p class="kick">▼ 頼み方のコツ</p><h2>ひと工夫で、返ってくる質が変わる</h2><div class="vsrow"><div class="vsb bad"><span class="vl">✘ ありがちな頼み方</span><p>サイトをテストして</p></div><div class="vsb good"><span class="vl">✔ おすすめの頼み方</span><p>/webapp-testing ローカルのLPで、スマホ幅の表示、リンク、入力エラーを確認して。購入・送信・外部公開は行わず、問題点とスクリーンショットをまとめて</p><button class="cp">コピー</button></div><p class="vsp">対象、確認項目、やらないことを揃えると、安全で読みやすい結果が返ります。</p></div><div class="vsrow"><div class="vsb bad"><span class="vl">✘ ありがちな頼み方</span><p>本番のサイトで申し込みまで試して</p></div><div class="vsb good"><span class="vl">✔ おすすめの頼み方</span><p>ローカルのページで、ダミーデータだけを使って確認して。購入・送信・外部公開は行わないで</p><button class="cp">コピー</button></div><p class="vsp">初回はダミーデータとローカル環境で。本物のデータや決済を動かさないのが鉄則です。</p></div></div></section><section id="can"><div class="wrap"><p class="kick">▼ できること、できないこと</p><h2>得意なこと、任せられないこと</h2><div class="cc"><div class="yes"><h4>得意なこと</h4><ul><li>ボタンや入力欄の操作確認</li><li>画面表示、ブラウザログ、スクリーンショットの確認</li><li>LP制作後の点検</li></ul></div><div class="no"><h4>任せられないこと</h4><ul><li>環境の準備そのもの（Skillのコピーだけでは入らない）</li><li>本番の購入や送信を試すこと（行わない前提で使う）</li><li>品質や安全性の保証</li></ul></div></div></div></section><section id="faq"><div class="wrap"><p class="kick">▼ よくある質問</p><h2>つまずきやすいところ</h2><div class="faq"><details><summary>準備が難しそうで不安です</summary><p>最初はプロジェクト専用の環境で、Playwright公式の手順に沿って進めましょう。迷ったら、環境の確認から手伝ってもらう頼み方もできます。</p></details><details><summary>実機のスマホでも確認できますか？</summary><p>ここで確認できるのは、ブラウザの画面幅を変えた表示です。実機での見え方は、別途自分で確かめると確実です。</p></details><details><summary>なぜダミーデータなのですか？</summary><p>同梱のヘルパーは、指定されたサーバー起動コマンドをシェルで実行します。初回は、ダミーデータとローカル環境で、影響の少ない形から試すのが安全です。</p></details></div></div></section><section id="info"><div class="wrap"><p class="kick">▼ 導入情報</p><h2>導入するときに確認すること</h2><dl class="metat"><dt>導入元</dt><dd>A　skills/webapp-testing</dd><dt>コピー先</dt><dd>&lt;保存先&gt;/webapp-testing</dd><dt>確認するファイル</dt><dd>&lt;保存先&gt;/webapp-testing/SKILL.md</dd><dt>依存関係</dt><dd>Python、Playwright、対応ブラウザー。加えて、対象アプリを動かす環境が必要</dd><dt>ライセンス</dt><dd>Apache-2.0</dd><dt>確認したSKILL.md</dt><dd><a href="https://github.com/anthropics/skills/blob/8a1541c4a3ffa5a20a5a91de0dcf3f0bab1d1ef4/skills/webapp-testing/SKILL.md" target="_blank" rel="noopener">GitHubで開く</a>（確認時のコミットに固定したページ）</dd></dl><div class="warn" style="margin-top:22px"><b>注意</b>　同梱ヘルパーは、指定されたサーバー起動コマンドをシェルで実行します。初回はダミーデータとローカル環境で試してください。</div></div></section><div class="wrap"><div class="pager"><a class="pg" href="#/skills/frontend-design"><small>前のSkill</small><b>5　frontend-design</b><span>文章を、スマホでも読みやすい画面に作る</span></a><a class="pg next" href="#/skills/skill-creator"><small>次のSkill</small><b>7　skill-creator</b><span>繰り返す仕事を、自分専用のSkillにする</span></a></div></div>
+</main>
+<main class="route" data-route="/start" data-title="使い始め方" hidden>
+
+<div class="phero"><div class="wrap">
+  <p class="crumb"><a href="#/">ホーム</a> / 使い始め方</p>
+  <p class="kick">▼ 使い始め方</p>
+  <h1 class="ptitle">全部いきなり入れなくて大丈夫</h1>
+  <p class="lead">最初の一歩は、1と3の2つだけでもOK。足りない工程が出たら、そのとき足していく進め方がおすすめです。ここでは、架空の講座「はじめてのAI時短講座」を例に、7つで1周する流れを見てみましょう。</p>
+  <div class="chips"><a href="#route">1周の流れ</a><a href="#notes">運用上の注意</a></div>
+</div></div>
+<section id="route"><div class="wrap">
+  <p class="kick">▼ 1周の流れ</p>
+  <h2>7つのSkillで、講座を売る準備を一周する</h2>
+  <p class="lead">材料、指示、成果物の3点で、各工程をまとめました。指示は短く省略しています。完全な指示文は、各Skillのページで確認できます。</p>
+  <div class="road case" id="road" data-anim><div class="fillb"></div><div class="rs"><div class="d">1</div><h4>product-marketing　商品を整理する</h4><div class="cs"><b>材料</b>AI初心者向けの講座を売りたい。材料は箇条書きのメモ。</div><div class="cs"><b>指示</b><code>/product-marketing AI初心者向け講座の商品情報を整理して…</code></div><div class="cs"><b>成果物</b>対象者、悩み、提供内容、強み、確認したい点がそろった商品資料</div><a class="lk" href="#/skills/product-marketing">このSkillを詳しく見る</a></div><div class="rs"><div class="d">2</div><h4>content-strategy　発信を企画する</h4><div class="cs"><b>材料</b>商品資料と、4週間という期間。</div><div class="cs"><b>指示</b><code>/content-strategy 商品資料をもとに、4週間分の発信計画を作って…</code></div><div class="cs"><b>成果物</b>疑問に答える週から、講座案内の週までの計画表</div><a class="lk" href="#/skills/content-strategy">このSkillを詳しく見る</a></div><div class="rs"><div class="d">3</div><h4>copywriting　販売ページを下書きする</h4><div class="cs"><b>材料</b>商品資料と、確認済みの提供内容。</div><div class="cs"><b>指示</b><code>/copywriting この講座情報から販売ページの下書きを作って…</code></div><div class="cs"><b>成果物</b>見出しから申し込みボタンまでの原稿</div><a class="lk" href="#/skills/copywriting">このSkillを詳しく見る</a></div><div class="rs"><div class="d">4</div><h4>frontend-design　画面にする</h4><div class="cs"><b>材料</b>販売ページの原稿。</div><div class="cs"><b>指示</b><code>/frontend-design この販売文で、スマホでも読みやすい1ページの講座LPを作って…</code></div><div class="cs"><b>成果物</b>ブラウザで開けるLP（ローカルのみ）</div><a class="lk" href="#/skills/frontend-design">このSkillを詳しく見る</a></div><div class="rs"><div class="d">5</div><h4>webapp-testing　動作を確認する</h4><div class="cs"><b>材料</b>ローカルで動くLPと、ダミーデータ。</div><div class="cs"><b>指示</b><code>/webapp-testing ローカルのLPで、スマホ幅の表示、リンク、入力エラーを確認して…</code></div><div class="cs"><b>成果物</b>問題点のメモと、スクリーンショット</div><a class="lk" href="#/skills/webapp-testing">このSkillを詳しく見る</a></div><div class="rs"><div class="d">6</div><h4>social　SNSに展開する</h4><div class="cs"><b>材料</b>公開した解説記事（または動画の文字起こし）。</div><div class="cs"><b>指示</b><code>/social この解説記事を、Threads投稿の下書き5本と…</code></div><div class="cs"><b>成果物</b>媒体向けの下書き一式（投稿は自分の手で）</div><a class="lk" href="#/skills/social">このSkillを詳しく見る</a></div><div class="rs last"><div class="d">7</div><h4>skill-creator　手順をSkill化する</h4><div class="cs"><b>材料</b>何度か使って安定した、記事からSNS下書きへの流れ。</div><div class="cs"><b>指示</b><code>/skill-creator 記事からSNS下書きを作る手順をSkill化したい…</code></div><div class="cs"><b>成果物</b>自分専用のSkillの草案とテスト例</div><a class="lk" href="#/skills/skill-creator">このSkillを詳しく見る</a></div></div>
+</div></section>
+<section id="notes"><div class="wrap">
+  <p class="kick">▼ 運用上の注意</p>
+  <h2>安全に続けるために</h2>
+  <div class="chk" style="max-width:720px">
+    <label><input type="checkbox">APIキー、パスワード、顧客の個人情報を、SKILL.mdや公開リポジトリに書かない</label>
+    <label><input type="checkbox">最初は匿名化したダミー情報で試す</label>
+    <label><input type="checkbox">生成された実績数値や引用元は、公開前に必ず人が確認する</label>
+    <label><input type="checkbox">投稿、メール送信、決済は、内容を確認してから実行する</label>
+    <label><input type="checkbox">止めたいSkillは、フォルダーをskillsの外へ移して再読み込み</label>
+  </div>
+  <h3 style="margin-top:44px">更新と復旧</h3>
+  <p style="max-width:44em">コミット固定は、確認した内容を再現しやすくするための方法です。更新するときは、新しい版を別の場所に取得して、差分とライセンスを見てから入れ替えます。自動更新は設定していません。動作を止めたいときは、対象Skillのフォルダーをskillsの外へ退避して、再読み込みまたは再起動。削除する前には、自分の変更をバックアップしておきましょう。</p>
+  <details>
+    <summary>選んだ根拠と、確認した範囲</summary>
+    <p>anthropics/skills は GitHub Stars 179,656（2026-10-05 観測）、coreyhaines31/marketingskills は 53,096（同日観測）。Starsはリポジトリ全体の値で、各Skillの品質や効果を直接示すものではありません。「個別Skill人気トップ7」という順位でもありません。</p>
+    <p>確認できたのは、7件のSKILL.md、フォルダー構成、ライセンス、主要ヘルパーの静的な確認と、公式導入資料の照合まで。各OSでのインストール成功、実行成功、成果物の品質は未検証です。</p>
+  </details>
+</div></section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <b>Claude Code Skills 超やさしいマニュアル</b>
+    <span>調査日 2026年10月5日。図解の画面と出力例は、説明用に作ったイメージ（架空の例）です。実際の見た目や出力とは異なる場合があります。</span>
+    <span>公式の保存先と読み込みについては、Claude Code公式ドキュメントのskillsのページを確認してください。</span>
+  </div>
+</footer>
+<script>
+(function(){
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function replay(el){ el.classList.remove('go'); void el.offsetWidth; el.classList.add('go'); }
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting && !e.target.classList.contains('go')){ e.target.classList.add('go'); } });
+  },{threshold:.2});
+  document.querySelectorAll('[data-anim]').forEach(function(el){ io.observe(el); });
+
+  var hero = document.getElementById('heroStage');
+  if(hero && !reduce){ setInterval(function(){ replay(hero); }, 11000); }
+
+  document.querySelectorAll('[data-replay]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var t = b.getAttribute('data-replay');
+      var el = t === 'parent' ? b.closest('[data-anim]') : document.querySelector(t);
+      if(el) replay(el);
+    });
+  });
+
+  var root = document.documentElement;
+  try{ var saved = localStorage.getItem('skills-theme'); if(saved){ root.setAttribute('data-theme', saved); } }catch(e){}
+  var tg = document.getElementById('theme');
+  if(tg){ tg.addEventListener('click', function(){
+    var cur = root.getAttribute('data-theme');
+    if(!cur){ cur = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+    var next = cur === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try{ localStorage.setItem('skills-theme', next); }catch(e){}
+  }); }
+
+  var P = {
+    proj:{root:'&lt;プロジェクト&gt;/.claude/skills/', ttl:'プロジェクト用', txt:'特定の仕事だけで使う置き場所。試しやすく、片付けも簡単です。', full:'&lt;対象プロジェクト&gt;/.claude/skills/'},
+    mac:{root:'~/.claude/skills/', ttl:'個人用 Mac・Linux・WSL', txt:'どのプロジェクトでも使える置き場所。WSLの「~」は通常 /home/ユーザー名 で、Windows側のC:\\Usersとは別のホームです。', full:'~/.claude/skills/'},
+    win:{root:'C:\\Users\\ユーザー名\\.claude\\skills\\', ttl:'個人用 Windows', txt:'Windowsネイティブで、どのプロジェクトでも使う置き場所。CLAUDE_CONFIG_DIRなどで設定場所を変えている場合は、既存の設定を先に確認しましょう。', full:'%USERPROFILE%\\.claude\\skills\\'}
+  };
+  var pt = document.getElementById('ptree');
+  function drawPath(k){
+    var d = P[k];
+    pt.innerHTML = '<span class="h">' + d.root + '</span>\n' +
+      ' ├─ product-marketing/\n │   └─ SKILL.md\n' +
+      ' ├─ copywriting/\n │   └─ SKILL.md\n' +
+      ' ├─ frontend-design/   <span class="h">← ここに置く</span>\n │   ├─ SKILL.md\n │   └─ LICENSE.txt\n' +
+      ' └─ …ほかのSkillも同じ形で';
+    document.getElementById('pttl').textContent = d.ttl;
+    document.getElementById('ptxt').textContent = d.txt;
+    document.getElementById('pfull').innerHTML = d.full;
+  }
+  if(pt){
+    drawPath('proj');
+    document.querySelectorAll('.tab').forEach(function(t){
+      t.addEventListener('click', function(){
+        document.querySelectorAll('.tab').forEach(function(x){ x.setAttribute('aria-selected','false'); });
+        t.setAttribute('aria-selected','true'); drawPath(t.getAttribute('data-p'));
+      });
+    });
+  }
+
+  document.querySelectorAll('.cp').forEach(function(b){
+    b.addEventListener('click', function(){
+      var txt = b.parentNode.querySelector('p').textContent;
+      function done(){ var o = b.textContent; b.textContent = 'コピーしました'; setTimeout(function(){ b.textContent = o; }, 1600); }
+      function fallback(){
+        var ta = document.createElement('textarea'); ta.value = txt; ta.style.position='fixed'; ta.style.opacity='0';
+        document.body.appendChild(ta); ta.select();
+        try{ document.execCommand('copy'); done(); }catch(e){ b.textContent = '長押しで選択してコピー'; }
+        document.body.removeChild(ta);
+      }
+      try{
+        if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(done, fallback); }
+        else { fallback(); }
+      }catch(e){ fallback(); }
+    });
+  });
+})();
+</script>
+<script>
+(function(){
+  var routes={};document.querySelectorAll('.route').forEach(function(r){routes[r.getAttribute('data-route')]=r;});
+  function cur(){var h=location.hash;if(h.indexOf('#/')===0){return h.slice(1);}return '/';}
+  function show(){
+    var k=cur();var el=routes[k]||routes['/'];
+    document.querySelectorAll('.route').forEach(function(r){r.hidden=true;});
+    el.querySelectorAll('[data-anim]').forEach(function(a){a.classList.remove('go');});
+    el.hidden=false;
+    document.body.className=(k==='/')?'':'page';
+    document.title=el.getAttribute('data-title')+' | Claude Code Skills 超やさしいマニュアル';
+    var top=k.indexOf('/skills')===0?'#/skills':k==='/'?'#/':'#'+k;
+    document.querySelectorAll('.nav a').forEach(function(a){
+      if(a.getAttribute('href')===top){a.setAttribute('aria-current','page');}else{a.removeAttribute('aria-current');}
+    });
+    window.scrollTo(0,0);
+  }
+  window.addEventListener('hashchange',show);
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a)return;
+    var h=a.getAttribute('href');
+    if(h.indexOf('#/')===0)return;
+    e.preventDefault();
+    var id=h.slice(1);var scope=document.querySelector('.route:not([hidden])');
+    var t=scope&&scope.querySelector('[id="'+id+'"]');
+    if(t){t.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+  show();
+})();
+</script>
+</body>
+</html>
